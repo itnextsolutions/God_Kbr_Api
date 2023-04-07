@@ -1,0 +1,15 @@
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\bin\Debug\net7.0\Godrej_Korber_DAL.deps.json
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\bin\Debug\net7.0\Godrej_Korber_DAL.dll
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\bin\Debug\net7.0\Godrej_Korber_DAL.pdb
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\obj\Debug\net7.0\Godrej_Korber_DAL.csproj.AssemblyReference.cache
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\obj\Debug\net7.0\Godrej_Korber_DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\obj\Debug\net7.0\Godrej_Korber_DAL.AssemblyInfoInputs.cache
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\obj\Debug\net7.0\Godrej_Korber_DAL.AssemblyInfo.cs
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\obj\Debug\net7.0\Godrej_Korber_DAL.csproj.CoreCompileInputs.cache
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\obj\Debug\net7.0\Godrej_Korber_DAL.dll
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\obj\Debug\net7.0\refint\Godrej_Korber_DAL.dll
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\obj\Debug\net7.0\Godrej_Korber_DAL.pdb
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\obj\Debug\net7.0\ref\Godrej_Korber_DAL.dll
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\bin\Debug\net7.0\Godrej_Korber_Shared.dll
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\bin\Debug\net7.0\Godrej_Korber_Shared.pdb
+C:\Projects\GodrejKorber\Godrej_Korber_DAL\obj\Debug\net7.0\Godrej_Korber_DAL.csproj.CopyComplete
