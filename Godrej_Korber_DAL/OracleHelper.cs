@@ -1,14 +1,14 @@
-﻿using Devart.Data.Oracle;
-//using Oracle.ManagedDataAccess.Client;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.OracleClient;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Godrej_Korber_DAL
 {
@@ -19,12 +19,14 @@ namespace Godrej_Korber_DAL
         public OracleParameter[] cmdParameter;
 
         private OracleConnection conn;
-        public readonly string CON_STRING = Convert.ToString(ConfigurationManager.ConnectionStrings["ConnectionString"]);
+        //public readonly string CON_STRING = Convert.ToString(ConfigurationManager.ConnectionStrings["ConnectionString"]);
 
-        public static string GetConnectionString()
-        {
-            return Convert.ToString(ConfigurationManager.ConnectionStrings["ConnectionString"]);
-        }
+        public readonly string CON_STRING = "(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = DESKTOP-44Q6036)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = WMS19))); User Id = MRFWMS; Password=SYSEFA;";
+
+        //public static string GetConnectionString()
+        //{
+        //    return Convert.ToString(ConfigurationManager.ConnectionStrings["ConnectionString"]);
+        //}
         public OracleConnection GetConnection()
         {
             try
@@ -104,7 +106,7 @@ namespace Godrej_Korber_DAL
                         int ds_i = 0;
                         foreach (var parms in cmdParms)
                         {
-                            if (parms.OracleDbType == OracleDbType.Cursor)
+                            if (parms.OracleType == OracleType.Cursor)
                             {
                                 ds.Tables[ds_i].TableName = parms.ParameterName;
                                 ds_i++;
@@ -539,7 +541,7 @@ namespace Godrej_Korber_DAL
                         int ds_i = 0;
                         foreach (var parms in cmdParms)
                         {
-                            if (parms.OracleDbType == OracleDbType.Cursor)
+                            if (parms.OracleType == OracleType.Cursor)
                             {
                                 dt.TableName = parms.ParameterName;
                                 ds_i++;

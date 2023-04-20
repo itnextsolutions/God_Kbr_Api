@@ -20,7 +20,7 @@ namespace Godrej_Korber_DAL
 
         private SqlConnection conn;
         //public readonly string CON_STRING = Convert.ToString(ConfigurationManager.ConnectionStrings["SqlConnection"]);
-         public static string CON_STRING = "Data Source=DESKTOP-44Q6036;Initial Catalog=VastraIndia ; Integrated Security = True;";
+         public static string CON_STRING = "Data Source=DESKTOP-44Q6036;Initial Catalog=GIN_EFAWMS ; Integrated Security = True;";
 
         public SqlConnection GetConnection()
         {
