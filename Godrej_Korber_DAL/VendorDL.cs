@@ -66,43 +66,49 @@ namespace Godrej_Korber_DAL
             try
             {
 
-                OracleParameter[] param = new OracleParameter[5];
+                OracleParameter[] param = new OracleParameter[6];
 
                 
 
                 param[0] = new OracleParameter();
                 param[0].OracleType = OracleType.VarChar;
-                param[0].ParameterName = "MATERIAL_CATEGORY";
+                param[0].ParameterName = "P_VED_PRD_GRP_COD";
                 param[0].Value = vendor.MATERIAL_CATEGORY;
                 param[0].Direction = ParameterDirection.Input;
 
                 param[1] = new OracleParameter();
                 param[1].OracleType = OracleType.VarChar;
-                param[1].ParameterName = "MATERIAL_CODE";
+                param[1].ParameterName = "P_VED_PRD_COD";
                 param[1].Value = vendor.MATERIAL_CODE;
                 param[1].Direction = ParameterDirection.Input;
 
                 param[2] = new OracleParameter();
                 param[2].OracleType = OracleType.VarChar;
-                param[2].ParameterName = "MATERIAL_DESC";
+                param[2].ParameterName = "P_VED_PRD_DESC";
                 param[2].Value = vendor.MATERIAL_DESC;
                 param[2].Direction = ParameterDirection.Input;
 
                 param[3] = new OracleParameter();
                 param[3].OracleType = OracleType.VarChar;
-                param[3].ParameterName = "VENDOR_CODE";
+                param[3].ParameterName = "P_VED_COD";
                 param[3].Value = vendor.VENDOR_CODE;
                 param[3].Direction = ParameterDirection.Input;
 
                 param[4] = new OracleParameter();
                 param[4].OracleType = OracleType.VarChar;
-                param[4].ParameterName = "VENDOR_DESC";
+                param[4].ParameterName = "P_VED_DESC";
                 param[4].Value = vendor.VENDOR_DESC;
                 param[4].Direction = ParameterDirection.Input;
 
+                param[5] = new OracleParameter();
+                param[5].OracleType = OracleType.Cursor;
+                param[5].ParameterName = "OCUR";
                
+                param[5].Direction = ParameterDirection.Output;
 
-                dtResult = objOracle.ExecuteDataTable(objOracle.GetConnection(), CommandType.StoredProcedure, "INSERT_INTO_VENDOR_MASTER", param);
+
+
+                dtResult = objOracle.ExecuteDataTable(objOracle.GetConnection(), CommandType.StoredProcedure, "WMS_VENDOR.INSERT_INTO_VENDOR_MASTER", param);
             }
 
             catch (Exception ex)
@@ -123,8 +129,28 @@ namespace Godrej_Korber_DAL
 
         public DataTable getVendorMaster()
         {
-            dtResult = objOracle.ExecuteDataTable(objOracle.GetConnection(), CommandType.Text, "Select * from VENDOR_MASTER");
 
+            try
+            {
+                OracleParameter[] param = new OracleParameter[1];
+
+                param[0] = new OracleParameter();
+                param[0].OracleType = OracleType.Cursor;
+                param[0].ParameterName = "OCUR";
+
+                param[0].Direction = ParameterDirection.Output;
+
+                dtResult = objOracle.ExecuteDataTable(objOracle.GetConnection(), CommandType.StoredProcedure, "WMS_VENDOR.GET_VENDOR_MASTER", param);
+
+                
+            }
+            catch (Exception ex) 
+            { 
+                throw ex; 
+            }
+            finally { 
+                objOracle.CloseConnection(); 
+            }
             return dtResult;
         }
 

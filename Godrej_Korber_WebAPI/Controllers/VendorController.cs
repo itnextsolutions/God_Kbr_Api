@@ -63,8 +63,18 @@ namespace Godrej_Korber_WebAPI.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] VendorModel vendor)
         {
-            _ = objVendorDL.InsertVendorMasterOracle(vendor);
-            return new JsonResult("Sucess");
+            dtResult = objVendorDL.InsertVendorMasterOracle(vendor);
+            int output = Convert.ToInt32(dtResult.Rows[0][0]);
+            
+            if(output == 1)
+            {
+               return new JsonResult("Sucess");
+            }
+
+            else
+            {
+                return new JsonResult("Failed");
+            }
         }
 
         //// PUT api/<VendorController>/5
