@@ -1,5 +1,6 @@
 ﻿using Godrej_Korber_DAL;
 using Godrej_Korber_Shared.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
@@ -74,20 +75,37 @@ namespace Godrej_Korber_WebAPI.Controllers
         {
             dt = materialDal.InsertMaterial(materialMaster);
 
-            return new JsonResult("Succes");
+            int output = Convert.ToInt32(dt.Rows[0][0]);
 
+            if (output == 1)
+            {
+                return new JsonResult("Sucess");
+            }
+
+            else
+            {
+                return new JsonResult("Failed");
+            }
         }
 
-        //// PUT api/<MaterialMasterController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+        // POST api/<MaterialMasterController>
+        [Route("api/MaterialMaster/UpdateMaterial")]
+        [HttpPost]
+        public ActionResult UpdateMaterial([FromBody] MaterialMasterModel materialMaster)
+        {
+            dt = materialDal.UpdateMaterial(materialMaster);
 
-        //// DELETE api/<MaterialMasterController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+            int output = Convert.ToInt32(dt.Rows[0][0]);
+
+            if (output == 1)
+            {
+                return new JsonResult("Sucess");
+            }
+
+            else
+            {
+                return new JsonResult("Failed");
+            }
+        }
     }
 }
