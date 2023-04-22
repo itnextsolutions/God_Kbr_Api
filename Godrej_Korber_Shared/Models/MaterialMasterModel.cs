@@ -16,8 +16,8 @@ namespace Godrej_Korber_Shared.Models
         public float PRD_LENG { get; set; }
         public string PRD_CTRL_TYPE { get; set; }
         public float PRD_PACK_QTY { get; set; }
-
         public string PRD_MEAS_UNIT { get; set; }
+        //public float PRD_HUPT_ID { get; set; }
 
     }
 }

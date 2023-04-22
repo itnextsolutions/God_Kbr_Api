@@ -28,30 +28,30 @@ namespace Godrej_Korber_WebAPI.Controllers
             return "value";
         }
 
-        // POST api/<LoginController>
-        [Route("api/login/login")]
-        [HttpPost]
-        public ActionResult Post([FromBody] LoginModel login)
-        {
-            //string connString = this.Configuration.GetConnectionString("DefaultConnection");
-            login.username = "admin";
-            login.password = "kiran11";
-            dt = objLogin.GetLoginDetail(login.username);
+        //// POST api/<LoginController>
+        //[Route("api/login/login")]
+        //[HttpPost]
+        //public ActionResult Post([FromBody] LoginModel login)
+        //{
+        //    //string connString = this.Configuration.GetConnectionString("DefaultConnection");
+        //    login.username = "admin";
+        //    login.password = "kiran11";
+        //    dt = objLogin.GetLoginDetail(login.username);
 
-            if (dt.Rows.Count != 0)
-            {
-                dt = objLogin.Login(login.username, login.password);
+        //    if (dt.Rows.Count != 0)
+        //    {
+        //        dt = objLogin.Login(login.username, login.password);
 
-                if (dt.Rows.Count != 0)
-                {
-                    return new JsonResult("Success");
-                }
+        //        if (dt.Rows.Count != 0)
+        //        {
+        //            return new JsonResult("Success");
+        //        }
 
-                return new JsonResult("Invalid Password");
-            }
-            
-            return new JsonResult ("Invalid UserName & Password");
-        }
+        //        return new JsonResult("Invalid Password");
+        //    }
+
+        //    return new JsonResult("Invalid UserName & Password");
+        //}
 
         // PUT api/<LoginController>/5
         [HttpPut("{id}")]
