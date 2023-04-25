@@ -79,7 +79,7 @@ namespace Godrej_Korber_WebAPI.Controllers
 
             if (output == 1)
             {
-                return new JsonResult("Sucess");
+                return new JsonResult("Success");
             }
 
             else
@@ -87,6 +87,27 @@ namespace Godrej_Korber_WebAPI.Controllers
                 return new JsonResult("Failed");
             }
         }
+
+        // POST api/<MaterialMasterController>
+        [Route("api/MaterialMaster/InsertIntoHostToWms")]
+        [HttpPost]
+        public ActionResult InsertIntoHostToWms([FromBody]  HostToWmsModel Wmsmodel)
+        {
+            dt = materialDal.InserIntoHostToWms(Wmsmodel);
+
+            int output = Convert.ToInt32(dt.Rows[0][0]);
+
+            if (output == 1)
+            {
+                return new JsonResult("Success");
+            }
+
+            else
+            {
+                return new JsonResult("Failed");
+            }
+        }
+
 
         // POST api/<MaterialMasterController>
         [Route("api/MaterialMaster/UpdateMaterial")]
@@ -99,7 +120,7 @@ namespace Godrej_Korber_WebAPI.Controllers
 
             if (output == 1)
             {
-                return new JsonResult("Sucess");
+                return new JsonResult("Success");
             }
 
             else
