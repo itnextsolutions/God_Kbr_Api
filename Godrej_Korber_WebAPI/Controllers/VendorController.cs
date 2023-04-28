@@ -19,22 +19,6 @@ namespace Godrej_Korber_WebAPI.Controllers
         VendorDL objVendorDL = new VendorDL();
 
 
-
-        //// GET: api/<VendorController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET api/<VendorController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-
         [Route("api/vendor/GetVendorMaster")]
         [HttpGet]
         public JsonResult Get()
@@ -57,36 +41,6 @@ namespace Godrej_Korber_WebAPI.Controllers
             //return new JsonResult(true);
         }
 
-
-        // POST api/<VendorController>
-        [Route("api/vendor/InsertVendorMaster")]
-        [HttpPost]
-        public ActionResult Post([FromBody] VendorModel vendor)
-        {
-            dtResult = objVendorDL.InsertVendorMasterOracle(vendor);
-            int output = Convert.ToInt32(dtResult.Rows[0][0]);
-            
-            if(output == 1)
-            {
-               return new JsonResult("Sucess");
-            }
-
-            else
-            {
-                return new JsonResult("Failed");
-            }
-        }
-
-        //// PUT api/<VendorController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<VendorController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+       
     }
 }
