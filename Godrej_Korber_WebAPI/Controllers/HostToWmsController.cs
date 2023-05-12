@@ -57,6 +57,31 @@ namespace Godrej_Korber_WebAPI.Controllers
             }
         }
 
+        [Route("api/HostToWms/InsertOrderItem")]
+        [HttpPost]
+        public ActionResult InsertOrderItem([FromBody] List<HostToWmsModel> wmsModel)
+        {
+            foreach(HostToWmsModel item in wmsModel)
+            {
+                item.MSG_WRK_STN = System.Environment.MachineName;
+                item.MSG_WRK_USER = "Yogesh Gole";
+
+                dtResult = wmsDL.InserIntoHostToWms(item);
+            }
+
+            int output = Convert.ToInt32(dtResult.Rows[0][0]);
+
+            if (output == 1)
+            {
+                return new JsonResult("Success");
+            }
+
+            else
+            {
+                return new JsonResult("Failed");
+            }
+        }
+
 
         //// PUT api/<HostToWmsController>/5
         //[HttpPut("{id}")]
