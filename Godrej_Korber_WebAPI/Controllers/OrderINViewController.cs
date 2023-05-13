@@ -3,72 +3,58 @@ using Godrej_Korber_Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Web.Http.Results;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Godrej_Korber_WebAPI.Controllers
 {
-	//[Route("api/[controller]")]
-	//[ApiController]
-	public class OrderINViewController : ControllerBase
-	{
 
-		DataTable dt = new DataTable();
-		OrderINViewDL OrderINDal = new OrderINViewDL();
+    public class OrderINViewController : ControllerBase
+    {
 
-		[Route("api/OrderINView/GetOrderdetail")]
-		[HttpGet]
+        DataTable dt = new DataTable();
+        OrderINViewDL OrderINDal = new OrderINViewDL();
+        PalletizationDL palletDl = new PalletizationDL();
 
-		public JsonResult GetOrderdetaildata()
-		{
-			dt = OrderINDal.GetOrder_IN_View();
 
-			List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
-			Dictionary<string, object> childRow;
-			foreach (DataRow row in dt.Rows)
-			{
-				childRow = new Dictionary<string, object>();
-				foreach (DataColumn col in dt.Columns)
-				{
-					childRow.Add(col.ColumnName, row[col]);
-				}
-				parentRow.Add(childRow);
-			}
-			return new JsonResult(parentRow);
-		}
-	
-		[Route("api/OrderInnView/UpdateInOrderInView")]
-		[HttpPost]
-		public ActionResult UpdateInInOrderInView([FromBody] UpdateData wmsModels)
-		{
-			int Hrs = Convert.ToInt32(wmsModels.Hr);
+        [Route("api/OrderINView/GetOrderdetail")]
+        [HttpGet]
 
-			foreach (var wmsModel in wmsModels.WmsModels)
-			{
-				//HostToWmsModel data = new HostToWmsModel
+        public JsonResult GetOrderdetaildata()
+        {
+            dt = OrderINDal.GetOrder_IN_View();
 
-				wmsModel.MSG_ORD_ID = wmsModel.MSG_ORD_ID;
-				wmsModel.MSG_ORD_DT_REQUEST = wmsModel.MSG_Hrs;
+            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+            Dictionary<string, object> childRow;
+            foreach (DataRow row in dt.Rows)
+            {
+                childRow = new Dictionary<string, object>();
+                foreach (DataColumn col in dt.Columns)
+                {
+                    childRow.Add(col.ColumnName, row[col]);
+                }
+                parentRow.Add(childRow);
+            }
+            return new JsonResult(parentRow);
+        }
 
-				//set other properties of data object here
+        [Route("api/OrderInnView/UpdateInOrderInView")]
+        [HttpPost]
+        public ActionResult UpdateInInOrderInView([FromBody] UpdateData wmsModels)
+        {
+            int Hrs = Convert.ToInt32(wmsModels.Hr);
 
-				wmsModel.MSG_WRK_STN = System.Environment.MachineName;
-				wmsModel.MSG_WRK_USER = "SONALI KAMBLE";
-			
+            foreach (var wmsModel in wmsModels.WmsModels)
+            {
 
-				dt = OrderINDal.UpdateInOrderItm(wmsModel, Hrs);
-			 }
+                wmsModel.MSG_WRK_STN = System.Environment.MachineName;
+                wmsModel.MSG_WRK_USER = "SONALI KAMBLE";
 
-			//foreach (HostToWmsModel data in wmsModels)
-			//{
-			//	int Hr = 4;
-			//	data.MSG_WRK_STN = System.Environment.MachineName;
-			//	data.MSG_WRK_USER = "SONALI KAMBLE";
+                dt = OrderINDal.UpdateInOrderItm(wmsModel, Hrs);
+                //dt = OrderINDal.updateOrderDtRequest(wmsModel, Hrs);
+            }
 
-			//	dt = OrderINDal.UpdateInOrderItm(data, Hrs);
-			//}
-
-			return new JsonResult("Success");
-		}
-
-	}
+            return new JsonResult("Success");
+        }
+    }
 }

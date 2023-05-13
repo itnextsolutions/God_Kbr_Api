@@ -24,48 +24,52 @@ namespace Godrej_Korber_DAL
 			OracleParameter[] param = new OracleParameter[1];
 			param[0] = new OracleParameter();
 			param[0].OracleType = OracleType.Cursor;
-			param[0].ParameterName = "orde_rcursor";
+			param[0].ParameterName = "order_cursor";
 			param[0].Direction = ParameterDirection.Output;
 
-			dt = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "MRFWMS.ORDERVIEW.ORDVIEW", param);// packagename.spname
-			return dt;
+             dt = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "MRFWMS.ORDERVIEW.ORDVIEW", param);
+            
+            return dt;
 		}
 
-		public DataTable UpdateInOrderItm(HostToWmsModel wmsModel, int Hr)
-		{
+        public DataTable UpdateInOrderItm(HostToWmsModel wmsModel, int Hr)
+        {
 
-			OracleParameter[] param = new OracleParameter[3];
+            OracleParameter[] param = new OracleParameter[3];
 
-			try
-			{
-				param[0] = new OracleParameter();
-				param[0].OracleType = OracleType.Int32;
-				param[0].ParameterName = "O_ORD_ID ";
-				param[0].Value = wmsModel.MSG_ORD_ID;
-				param[0].Direction = ParameterDirection.Input;
+            try
+            {                
 
-				param[1] = new OracleParameter();
-				param[1].OracleType = OracleType.Int32;
-				param[1].ParameterName = "O_ORD_DT_REQUEST_Hr";
-				param[1].Value = Hr;
-				param[1].Direction = ParameterDirection.Input;
+                param[0] = new OracleParameter();
+                param[0].OracleType = OracleType.Cursor;
+                param[0].ParameterName = "OCCUR";
+                param[0].Direction = ParameterDirection.Output;
 
-				param[2] = new OracleParameter();
-				param[2].OracleType = OracleType.Cursor;
-				param[2].ParameterName = "OCCUR";
-				param[2].Direction = ParameterDirection.Output;
+                param[1] = new OracleParameter();
+                param[1].OracleType = OracleType.Int32;
+                param[1].ParameterName = "O_ORD_ID";
+                param[1].Value = wmsModel.MSG_ORD_ID;
+                param[1].Direction = ParameterDirection.Input;
 
-				//dt=oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "MRFWMS.ORDERVIEW.UpdateOrdTimE", param);
-				dt = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "MRFWMS.UPDATE_ORDER_TIME", param);
-				
-			}
-			catch(Exception ex)
-			{
-				throw ex;
-			}
-			return dt;
-		}
-	}	
+                param[2] = new OracleParameter();
+                param[2].OracleType = OracleType.Int32;
+                param[2].ParameterName = "O_ORD_DT_REQUEST_Hr";
+                param[2].Value = Hr;
+                param[2].Direction = ParameterDirection.Input;
+
+                dt = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "MRFWMS.ORDERVIEW.UpdateOrdTime", param);
+               
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+
+    }	
 }
 
 
