@@ -8,5 +8,10 @@ namespace Godrej_Korber_Shared.Models.TataCummins
 {
     public class EmptyPallet
     {
+        public int HU_ID { get; set; }
+
+        public int HU_HUPT_ID { get; set; }
+
+        public int PALLET_NUMBER { get; set; }
     }
 }
