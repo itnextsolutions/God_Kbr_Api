@@ -17,17 +17,24 @@ namespace Godrej_Korber_DAL.TataCummins
 
 
 
-        public DataTable GetEmptyPalletOut()
+        public DataTable GetEmptyPalletOut(int palletnumber)
         {
             DataTable dt = new DataTable();
 
             OracleParameter[] param = new OracleParameter[1];
-            param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
-            param[0].ParameterName = "OCUR";
-            param[0].Direction = ParameterDirection.Output;
 
-            dt = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "WMS_PRODUCT.GET_MATERIAL_MASTER_DATA", param);
+            param[0] = new OracleParameter();
+            param[0].ParameterName = "PALLET_NUMBER";
+            param[0].OracleType = OracleType.Int32;
+            param[0].Value = palletnumber;
+            param[0].Direction = ParameterDirection.Input;
+
+            param[1] = new OracleParameter();
+            param[1].OracleType = OracleType.Cursor;
+            param[1].ParameterName = "OCUR";
+            param[1].Direction = ParameterDirection.Output;
+
+            dt = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "GET_EMPTY_PALLET_DATA", param);
             return dt;
         }
     }
