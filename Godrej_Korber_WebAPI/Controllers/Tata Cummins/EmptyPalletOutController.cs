@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Godrej_Korber_DAL.TataCummins;
 using Godrej_Korber_Shared.Models.TataCummins;
+using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,12 +11,27 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
     [ApiController]
     public class EmptyPalletOutController : ControllerBase
     {
+
+        DataTable dt = new DataTable();
         EmptyPalletOutDL objEmptyPalletOut = new EmptyPalletOutDL();
+
         // GET: api/<EmptyOutController>
         [HttpGet]
-        public IEnumerable<string> Get(EmptyPalletOut emptyPallet)
+        public JsonResult GetEmptyPalletOut()
         {
-            return new string[] { "value1", "value2" };
+            dt = objEmptyPalletOut.GetEmptyPalletOut();
+            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+            Dictionary<string, object> childRow;
+            foreach (DataRow row in dt.Rows)
+            {
+                childRow = new Dictionary<string, object>();
+                foreach (DataColumn col in dt.Columns)
+                {
+                    childRow.Add(col.ColumnName, row[col]);
+                }
+                parentRow.Add(childRow);
+            }
+            return new JsonResult(parentRow);
         }
 
         // GET api/<EmptyOutController>/5
