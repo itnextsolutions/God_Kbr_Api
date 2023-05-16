@@ -16,10 +16,11 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
         EmptyPalletOutDL objEmptyPalletOut = new EmptyPalletOutDL();
 
         // GET: api/<EmptyOutController>
+        [Route("api/EmptyPalletOut/GetEmptyPalletOut")]
         [HttpGet]
-        public JsonResult GetEmptyPalletOut()
+        public JsonResult GetEmptyPalletOut(EmptyPallet palletnumber)
         {
-            dt = objEmptyPalletOut.GetEmptyPalletOut();
+            dt = objEmptyPalletOut.GetEmptyPalletOut(palletnumber.PALLET_NUMBER);
             List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
             Dictionary<string, object> childRow;
             foreach (DataRow row in dt.Rows)
