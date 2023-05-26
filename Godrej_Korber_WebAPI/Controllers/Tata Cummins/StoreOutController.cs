@@ -32,5 +32,34 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return new JsonResult(parentRow);
         }
 
+        [Route("api/StoreOut/GetPalletDetails")]
+        [HttpGet]
+        public JsonResult Get_PalletDetails_Data(string parameter)
+        {
+
+            dtResult = objStoreOutDL.Get_PalletDetails_Data(parameter);
+            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+            Dictionary<string, object> childRow;
+            foreach (DataRow row in dtResult.Rows)
+            {
+                childRow = new Dictionary<string, object>();
+                foreach (DataColumn col in dtResult.Columns)
+                {
+                    childRow.Add(col.ColumnName, row[col]);
+                }
+                parentRow.Add(childRow);
+            }
+
+            return new JsonResult(parentRow);
+        }
+
+
+        [Route("/storeOut/Insert_Update_Pallet")]
+        [HttpPost]
+        public JsonResult Insert_Stock_Update_pallet(DataTable dtResult)
+        {
+            return new JsonResult(dtResult);
+        }
+
     }
 }
