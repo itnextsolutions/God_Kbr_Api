@@ -37,49 +37,59 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return new JsonResult(parentRow);
         }
 
-		
 
-		[Route("api/EmptyPalletOut/InsertEmptyPalletData")]
-		[HttpPost]
-		public ActionResult InsertEmptyPalletData([FromBody] EmptyPallet wmsModel)
-		{
+        [Route("api/EmptyPalletOut/InsertEmptyPalletData")]
+        [HttpPost]
+        public ActionResult InsertEmptyPalletData([FromBody] EmptyPallet emptyPalletData)
+        {
 
-			//wmsModel.MSG_WRK_STN = System.Environment.MachineName;
-			//wmsModel.MSG_WRK_USER = "SONALI KAMBLE";
+            emptyPalletData.HU_CRE_WKS_ID = System.Environment.MachineName;
+            emptyPalletData.HU_CRE_USER  = "Ajit Sonvane";
 
-			dt = objEmptyPalletOut.InsertEmptyPallet(wmsModel);
+            dt = objEmptyPalletOut.InsertEmptyPallet(emptyPalletData);
 
-			int output = Convert.ToInt32(dt.Rows[0][0]);
+            int output = Convert.ToInt32(dt.Rows[0][0]);
 
-			if (output == 1)
-			{
-				return new JsonResult("Success");
-			}
+            if (output == 1)
+            {
+                return new JsonResult("Success");
+            }
 
-			else
-			{
-				return new JsonResult("Failed");
-			}
-		}
+            else
+            {
+               return new JsonResult("Failed");
+            }
+        }
 
 
-		//update status from STK to RSV
-		
-	//	[Route("api/EmptyPallet/UpdateEmptyPallet")]
-	//	[HttpPost]
-	//	public ActionResult UpdateEmptyPallet([FromBody] EmptyPallet HU_ID)
-	//	{
-	//		foreach (var HU_ID in EmptyPallet.HU_ID)
+        [Route("api/EmptyPallet/UpdateEmptyPallet")]
+        [HttpPost]
+        public ActionResult UpdateEmptyPallet([FromBody] List<EmptyPallet> emptyPallet)
+        {
+            foreach (var data in emptyPallet)
+            {
+                //objEmptyPalletOut.data = data.HU_ID;
+                //data.MSG_WRK_STN = System.Environment.MachineName;
+                //data.MSG_WRK_USER = "SONALI KAMBLE";
 
-	//		{
-	//			//EmptyPallet.MSG_WRK_STN = System.Environment.MachineName;
-	//			//EmptyPallet.MSG_WRK_USER = "SONALI KAMBLE";
+                dt = objEmptyPalletOut.UpdateEmptyPalletcheck(data);
+            }
 
-	//			dt = objEmptyPalletOut.UpdateEmptyPalletcheck(HU_ID);
-	//		}
-	//		return new JsonResult(dt);
+            int output = Convert.ToInt32(dt.Rows[0][0]);
 
-	//}
-		                     
-	}
+            if (output == 1)
+            {
+                return new JsonResult("Success");
+            }
+
+            else
+            {
+                return new JsonResult("Failed");
+            }
+
+        }
+
+
+
+    }
 }
