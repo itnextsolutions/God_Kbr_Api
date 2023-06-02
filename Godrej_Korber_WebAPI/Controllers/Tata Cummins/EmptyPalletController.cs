@@ -35,7 +35,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return new JsonResult(parentRow);
         }
 
-        [Route("api/EmptyPalletOut/GetEmptyPalletOut")]
+        [Route("api/EmptyPalletOut/GetEmptyPalletOut_1")]
         [HttpGet]
         public JsonResult GetEmptyPalletOut([FromBody] PalletNumber palletNumber)
         {
