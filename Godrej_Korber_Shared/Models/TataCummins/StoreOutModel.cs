@@ -14,11 +14,13 @@ namespace Godrej_Korber_Shared.Models.TataCummins
 
          public int STK_PRD_QTY { get; set; }
  
-         public int STK_HU_ID { get; set; }
+         public int HU_ID { get; set; }
 
          public string EXE_USER { get; set; }
 
          public string EXE_WKS_ID { get; set; }
+
+        public int PARTIAL { get; set; }
 
 
     }

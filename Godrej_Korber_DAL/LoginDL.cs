@@ -1,51 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Data.OracleClient;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Godrej_Korber_Shared.Models;
+
 
 namespace Godrej_Korber_DAL
 {
     public class LoginDL
     {
-        DataTable dt = new DataTable();
-        SqlHelper objsqlHelper = new SqlHelper();
-        List<SqlParameter> SqlParameters = new List<SqlParameter>();
+        DataTable dtResult = new DataTable();
+        OracleHelper objoracleHelper = new OracleHelper();
+       
 
-
-        public DataTable GetLoginDetail(string username)
+        public DataTable Login(string username)
         {
-            SqlParameter[] param = new SqlParameter[1];
+            OracleParameter[] param = new OracleParameter[1];
 
-            param[0] = new SqlParameter();
-            param[0].ParameterName = "@Username";
-            param[0].SqlDbType = SqlDbType.VarChar;
+            param[0] = new OracleParameter();
+            param[0].ParameterName = "Username";
+            param[0].OracleType = OracleType.VarChar;
             param[0].Value = username;
             param[0].Direction = ParameterDirection.Input;
 
-            dt = objsqlHelper.ExecuteDataTable(objsqlHelper.GetConnection(), CommandType.StoredProcedure, "SP_GetLogin", param);
-            return dt;
+            dtResult = objoracleHelper.ExecuteDataTable(objoracleHelper.GetConnection(), CommandType.StoredProcedure, "SP_GetLogin", param);
+            return dtResult;
         }
-        public DataTable Login(string username, string password)
+        public DataTable GetLoginDetail(LoginModel loginData)
         {
-            SqlParameter[] param = new SqlParameter[2];
+            OracleParameter[] param = new OracleParameter[3];
 
-            param[0] = new SqlParameter();
-            param[0].ParameterName = "@Username";
-            param[0].SqlDbType = SqlDbType.VarChar;
-            param[0].Value = username;
-            param[0].Direction = ParameterDirection.Input;
+            param[0] = new OracleParameter();
+            param[0].ParameterName = "LS_RESULT";
+            param[0].OracleType = OracleType.Cursor;           
+            param[0].Direction = ParameterDirection.Output;
 
-            param[1] = new SqlParameter();
-            param[1].ParameterName = "@Password";
-            param[1].SqlDbType = SqlDbType.VarChar;
-            param[1].Value = password;
+
+            param[1] = new OracleParameter();
+            param[1].ParameterName = "MSG_USERNAME";
+            param[1].OracleType = OracleType.VarChar;
+            param[1].Value = loginData.username;
             param[1].Direction = ParameterDirection.Input;
 
-            dt = objsqlHelper.ExecuteDataTable(objsqlHelper.GetConnection(), CommandType.StoredProcedure, "SP_GetLoginDetails", param);
-            return dt;
+            param[2] = new OracleParameter();
+            param[2].ParameterName = "MSG_PASSWORD";
+            param[2].OracleType = OracleType.VarChar;
+            param[2].Value = loginData.password;
+            param[2].Direction = ParameterDirection.Input;
+
+            dtResult = objoracleHelper.ExecuteDataTable(objoracleHelper.GetConnection(), CommandType.StoredProcedure, "SP_GET_LOGIN_DETAILS", param);
+            return dtResult;
         }
     }
 }

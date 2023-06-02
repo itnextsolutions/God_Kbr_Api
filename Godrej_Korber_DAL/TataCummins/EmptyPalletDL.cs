@@ -117,69 +117,69 @@ namespace Godrej_Korber_DAL.TataCummins
         }
 
 
-  //      public DataTable UpdateEmptyPalletcheck(EmptyPallet wmsmodel)
-		//{
-
-		//	OracleParameter[] param= new OracleParameter[2];
-
-		//	param[0]= new OracleParameter();
-		//	param[0].OracleType= OracleType.Int32;
-		//	param[0].ParameterName = "MSG_HU_ID";
-		//	param[0].Value = wmsmodel.HU_ID;
-		//	param[0].Direction= ParameterDirection.Input;
-
-		//	param[1] = new OracleParameter();
-		//	param[1].OracleType = OracleType.Cursor;
-		//	param[1].ParameterName = "OCUR";
-		//	param[1].Direction= ParameterDirection.Output;
-
-		//	dt = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "MRFWMS.TATA_CUMMINS_EMPTY_PALLET.UPDATE_PALLET_DETAIL", param);
-		//	return dt;
-
-		//}
-
-
-
         public DataTable UpdateEmptyPalletcheck(EmptyPallet wmsmodel)
         {
 
-            OracleParameter[] param = new OracleParameter[5];
+            OracleParameter[] param = new OracleParameter[2];
 
             param[0] = new OracleParameter();
-            param[0].ParameterName = "PALLET_ID";
             param[0].OracleType = OracleType.Int32;
+            param[0].ParameterName = "MSG_HU_ID";
             param[0].Value = wmsmodel.HU_ID;
             param[0].Direction = ParameterDirection.Input;
 
             param[1] = new OracleParameter();
-            param[1].ParameterName = "QUERY_TYPE";
-            param[1].OracleType = OracleType.VarChar;
-            param[1].Value = "UPDATE";
-            param[1].Direction = ParameterDirection.Input;
+            param[1].OracleType = OracleType.Cursor;
+            param[1].ParameterName = "OCUR";
+            param[1].Direction = ParameterDirection.Output;
 
-            param[2] = new OracleParameter();
-            param[2].ParameterName = "PALLET_NUMBER";
-            param[2].OracleType = OracleType.Int32;
-            param[2].Value = wmsmodel.HU_ID;
-            param[2].Direction = ParameterDirection.Input;
-
-            param[3] = new OracleParameter();
-            param[3].ParameterName = "HU_VOL";
-            param[3].OracleType = OracleType.Int32;
-            param[3].Value = wmsmodel.HU_ID;
-            param[3].Direction = ParameterDirection.Input;
-
-            param[4] = new OracleParameter();
-            param[4].OracleType = OracleType.Cursor;
-            param[4].ParameterName = "OCUR";
-            param[4].Direction = ParameterDirection.Output;
-
-
-
-            dt = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "MRFWMS.TATA_CUMMINS_EMPTY_PALLET.CALL_HUNIT1", param);
+            dt = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "MRFWMS.TATA_CUMMINS_EMPTY_PALLET.UPDATE_PALLET_DETAIL", param);
             return dt;
 
         }
+
+
+
+        //public DataTable UpdateEmptyPalletcheck(EmptyPallet wmsmodel)
+        //{
+
+        //    OracleParameter[] param = new OracleParameter[5];
+
+        //    param[0] = new OracleParameter();
+        //    param[0].ParameterName = "PALLET_ID";
+        //    param[0].OracleType = OracleType.Int32;
+        //    param[0].Value = wmsmodel.HU_ID;
+        //    param[0].Direction = ParameterDirection.Input;
+
+        //    param[1] = new OracleParameter();
+        //    param[1].ParameterName = "QUERY_TYPE";
+        //    param[1].OracleType = OracleType.VarChar;
+        //    param[1].Value = "UPDATE";
+        //    param[1].Direction = ParameterDirection.Input;
+
+        //    param[2] = new OracleParameter();
+        //    param[2].ParameterName = "PALLET_NUMBER";
+        //    param[2].OracleType = OracleType.Int32;
+        //    param[2].Value = wmsmodel.HU_ID;
+        //    param[2].Direction = ParameterDirection.Input;
+
+        //    param[3] = new OracleParameter();
+        //    param[3].ParameterName = "HU_VOL";
+        //    param[3].OracleType = OracleType.Int32;
+        //    param[3].Value = wmsmodel.HU_ID;
+        //    param[3].Direction = ParameterDirection.Input;
+
+        //    param[4] = new OracleParameter();
+        //    param[4].OracleType = OracleType.Cursor;
+        //    param[4].ParameterName = "OCUR";
+        //    param[4].Direction = ParameterDirection.Output;
+
+
+
+        //    dt = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "MRFWMS.TATA_CUMMINS_EMPTY_PALLET.CALL_HUNIT1", param);
+        //    return dt;
+
+        //}
 
 
 
