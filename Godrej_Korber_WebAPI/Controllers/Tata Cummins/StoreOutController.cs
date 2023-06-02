@@ -1,4 +1,6 @@
 ﻿using Godrej_Korber_DAL.TataCummins;
+using Godrej_Korber_Shared.Models;
+using Godrej_Korber_Shared.Models.TataCummins;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
@@ -54,11 +56,59 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
         }
 
 
-        [Route("/storeOut/Insert_Update_Pallet")]
+        //[Route("api/storeOut/Insert_StockMovt_Update_StockItm")]
+        //[HttpPost]
+        //public JsonResult Insert_StockMovt_Update_StockItm([FromBody] List<StoreOutModel> storeOutData)
+        //{
+        //    foreach(StoreOutModel item in storeOutData){
+
+        //        item.EXE_USER = System.Environment.MachineName;
+        //        item.EXE_WKS_ID = "AJIT SONVANE";
+
+        //        dtResult = objStoreOutDL.Insert_StockMovt(item);
+        //    }
+
+        //    int output = Convert.ToInt32(dtResult.Rows[0][0]);
+
+        //    if (output == 1)
+        //    {
+        //        return new JsonResult("Success");
+        //    }
+
+        //    else
+        //    {
+        //        return new JsonResult("Failed");
+        //    }
+
+        //}
+
+
+        [Route("api/storeOut/Insert_StockMovt_Update_StockItm")]
+        //[Route("api/storeOut/Update_Hunit1")]
         [HttpPost]
-        public JsonResult Insert_Stock_Update_pallet(DataTable dtResult)
+        public JsonResult Insert_StockMovt_Update_StockItm_1([FromBody] List<StoreOutModel> storeOutData)
         {
-            return new JsonResult(dtResult);
+            foreach (StoreOutModel item in storeOutData)
+            {
+
+                item.EXE_USER = System.Environment.MachineName;
+                item.EXE_WKS_ID = "AJIT SONVANE";
+
+                dtResult = objStoreOutDL.Insert_and_update_storeOutData(item);
+            }
+
+            int output = Convert.ToInt32(dtResult.Rows[0][0]);
+
+            if (output == 1)
+            {
+                return new JsonResult("Success");
+            }
+
+            else
+            {
+                return new JsonResult("Failed");
+            }
+
         }
 
     }
