@@ -20,4 +20,9 @@ namespace Godrej_Korber_Shared.Models.TataCummins
 
         public string HU_CRE_WKS_ID { get; set; }
     }
+
+    public class PalletNumber
+    {
+        public int PALLET_NUMBER { get; set; }
+    }
 }

@@ -34,10 +34,34 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
         [Route("api/StockCount/GetPalletDetails")]
         [HttpGet]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public JsonResult GetPalletDetails(string partno, string grno)
         {
             dt = objStockCount.GetPalletDetails(partno, grno);
             if(dt != null) 
+            {
+                List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+                Dictionary<string, object> childRow;
+                foreach (DataRow row in dt.Rows)
+                {
+                    childRow = new Dictionary<string, object>();
+                    foreach (DataColumn col in dt.Columns)
+                    {
+                        childRow.Add(col.ColumnName, row[col]);
+                    }
+                    parentRow.Add(childRow);
+                }
+                return new JsonResult(parentRow);
+            }
+            return new JsonResult("Failed");
+        }
+
+        [Route("api/StockCount/GetPalletDetails1")]
+        [HttpGet]
+        public JsonResult GetPalletDetails1()
+        {
+            dt = objStockCount.GetPalletDetails1();
+            if (dt != null)
             {
                 List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
                 Dictionary<string, object> childRow;
@@ -88,24 +112,64 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 
             }
             return new JsonResult("Operation Success");
+            
+        }
 
-            //dt = objStockCount.GetValidCountForFurtherProcesse(stockcount.STK_REC_POS);
+        [Route("api/StockCount/StockCountByScannedId")]
+        [HttpGet]
+        public ActionResult StockCountByScannedId(int palletid)
+        {
+            dt = objStockCount.StockCountByScannedId(palletid);
 
+            if (dt != null)
+            {
+                List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+                Dictionary<string, object> childRow;
+                foreach (DataRow row in dt.Rows)
+                {
+                    childRow = new Dictionary<string, object>();
+                    foreach (DataColumn col in dt.Columns)
+                    {
+                        childRow.Add(col.ColumnName, row[col]);
+                    }
+                    parentRow.Add(childRow);
+                }
+                return new JsonResult(parentRow);
+            }
 
+            return new JsonResult("This PalleId Has Not Data");
 
-            //    List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
-            //    Dictionary<string, object> childRow;
-            //    foreach (DataRow row in dt.Rows)
-            //    {
-            //        childRow = new Dictionary<string, object>();
-            //        foreach (DataColumn col in dt.Columns)
-            //        {
-            //            childRow.Add(col.ColumnName, row[col]);
-            //        }
-            //        parentRow.Add(childRow);
-            //    }
-            //    return new JsonResult(parentRow);
-            //}
+        }
+
+        [Route("api/StockCount/UpdateInsertForConfirmation")]
+        [HttpGet]
+        public ActionResult UpdateInsertForConfirmation(StockCountModel stockCount)
+        {
+            //dt = objStockCount.GetHuPar3(items);
+
+            // int hupar3 = Convert.ToInt32(dt.Rows[0][0]);
+            stockCount.USER_ID = "1234";
+            stockCount.USERNAME = "YOGESH GOLE";
+            dt = objStockCount.UpdateInsertForConfirmation(stockCount);
+
+            if (dt != null)
+            {
+                List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+                Dictionary<string, object> childRow;
+                foreach (DataRow row in dt.Rows)
+                {
+                    childRow = new Dictionary<string, object>();
+                    foreach (DataColumn col in dt.Columns)
+                    {
+                        childRow.Add(col.ColumnName, row[col]);
+                    }
+                    parentRow.Add(childRow);
+                }
+                return new JsonResult(parentRow);
+            }
+
+            return new JsonResult("This PalleId Has Not Data");
+
         }
 
     }

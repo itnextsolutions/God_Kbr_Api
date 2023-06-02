@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Godrej_Korber_DAL.TataCummins;
+﻿using Godrej_Korber_DAL.TataCummins;
 using Godrej_Korber_Shared.Models.TataCummins;
+using Microsoft.AspNetCore.Mvc;
 using System.Data;
-using Godrej_Korber_Shared.Models;
-using Microsoft.AspNetCore.Http;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,9 +18,28 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
         // GET: api/<EmptyOutController>
         [Route("api/EmptyPalletOut/GetEmptyPalletOut")]
         [HttpGet]
-        public JsonResult GetEmptyPalletOut(EmptyPallet palletnumber)
+        public JsonResult GetEmptyPalletOut(int parameter)
         {
-            dt = objEmptyPalletOut.GetEmptyPalletOut(palletnumber.PALLET_NUMBER);
+            dt = objEmptyPalletOut.GetEmptyPalletOut(parameter);
+            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+            Dictionary<string, object> childRow;
+            foreach (DataRow row in dt.Rows)
+            {
+                childRow = new Dictionary<string, object>();
+                foreach (DataColumn col in dt.Columns)
+                {
+                    childRow.Add(col.ColumnName, row[col]);
+                }
+                parentRow.Add(childRow);
+            }
+            return new JsonResult(parentRow);
+        }
+
+        [Route("api/EmptyPalletOut/GetEmptyPalletOut")]
+        [HttpGet]
+        public JsonResult GetEmptyPalletOut([FromBody] PalletNumber palletNumber)
+        {
+            dt = objEmptyPalletOut.GetEmptyPalletOut(palletNumber.PALLET_NUMBER);
             List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
             Dictionary<string, object> childRow;
             foreach (DataRow row in dt.Rows)
@@ -44,7 +61,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
         {
 
             emptyPalletData.HU_CRE_WKS_ID = System.Environment.MachineName;
-            emptyPalletData.HU_CRE_USER  = "Ajit Sonvane";
+            emptyPalletData.HU_CRE_USER = "Ajit Sonvane";
 
             dt = objEmptyPalletOut.InsertEmptyPallet(emptyPalletData);
 
@@ -57,7 +74,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
             else
             {
-               return new JsonResult("Failed");
+                return new JsonResult("Failed");
             }
         }
 
