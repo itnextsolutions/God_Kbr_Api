@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OracleClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,6 +49,37 @@ namespace Godrej_Korber_DAL.TataCummins
 
             dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.UPDATE_IN_ORDER_ITEM", param);
             return dtResult;
+        }
+
+        public DataTable GetRequestINCancelletion()
+        {
+            OracleParameter[] param = new OracleParameter[1];
+
+            param[0] = new OracleParameter();
+            param[0].ParameterName = "OCUR";
+            param[0].OracleType = OracleType.Cursor;
+            param[0].Direction = ParameterDirection.Output;
+            dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.TATACUMMINSREQUESTINCANCELLETION", param);
+            return dtResult;
+        }
+
+        public DataTable UpdateRequestCancelletion(StoreRequestCancellationModel data)
+        {
+            OracleParameter[] param = new OracleParameter[2];
+
+            param[0] = new OracleParameter();
+            param[0].ParameterName = "ID_HU";
+            param[0].OracleType = OracleType.Int32;
+            param[0].Value = data.HU_ID;
+            param[0].Direction = ParameterDirection.Input;
+
+            param[1] = new OracleParameter();
+            param[1].ParameterName = "OCUR";
+            param[1].OracleType = OracleType.Cursor;
+            param[1].Direction = ParameterDirection.Output;
+            dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.UPDATE_IN_HUNIT", param);
+            return dtResult;
+
         }
     }
 }
