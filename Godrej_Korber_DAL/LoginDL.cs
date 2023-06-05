@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Data.OracleClient;
+//using System.Data.OracleClient;
+using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace Godrej_Korber_DAL
 
             param[0] = new OracleParameter();
             param[0].ParameterName = "Username";
-            param[0].OracleType = OracleType.VarChar;
+            param[0].OracleDbType = OracleDbType.Varchar2;
             param[0].Value = username;
             param[0].Direction = ParameterDirection.Input;
 
@@ -36,19 +37,19 @@ namespace Godrej_Korber_DAL
 
             param[0] = new OracleParameter();
             param[0].ParameterName = "LS_RESULT";
-            param[0].OracleType = OracleType.Cursor;           
+            param[0].OracleDbType = OracleDbType.RefCursor;           
             param[0].Direction = ParameterDirection.Output;
 
 
             param[1] = new OracleParameter();
             param[1].ParameterName = "MSG_USERNAME";
-            param[1].OracleType = OracleType.VarChar;
+            param[1].OracleDbType = OracleDbType.Varchar2;
             param[1].Value = loginData.username;
             param[1].Direction = ParameterDirection.Input;
 
             param[2] = new OracleParameter();
             param[2].ParameterName = "MSG_PASSWORD";
-            param[2].OracleType = OracleType.VarChar;
+            param[2].OracleDbType = OracleDbType.Varchar2;
             param[2].Value = loginData.password;
             param[2].Direction = ParameterDirection.Input;
 

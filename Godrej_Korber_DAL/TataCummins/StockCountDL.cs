@@ -1,6 +1,7 @@
 ﻿using Godrej_Korber_Shared.Models.TataCummins;
 using System.Data;
-using System.Data.OracleClient;
+//using System.Data.OracleClient;
+using Oracle.ManagedDataAccess.Client;
 
 namespace Godrej_Korber_DAL.TataCummins
 {
@@ -14,7 +15,7 @@ namespace Godrej_Korber_DAL.TataCummins
             OracleParameter[] param = new OracleParameter[1];
 
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
@@ -29,19 +30,19 @@ namespace Godrej_Korber_DAL.TataCummins
             OracleParameter[] param = new OracleParameter[3];
 
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
             param[1] = new OracleParameter();
             param[1].ParameterName = "PRD_COD";
-            param[1].OracleType = OracleType.Int32;
+            param[1].OracleDbType = OracleDbType.Varchar2;
             param[1].Value = partno;
             param[1].Direction = ParameterDirection.Input;
 
             param[2] = new OracleParameter();
             param[2].ParameterName = "REC_POS";
-            param[2].OracleType = OracleType.Int32;
+            param[2].OracleDbType = OracleDbType.Varchar2;
             param[2].Value = grno;
             param[2].Direction = ParameterDirection.Input;
 
@@ -56,7 +57,7 @@ namespace Godrej_Korber_DAL.TataCummins
             OracleParameter[] param = new OracleParameter[1];
 
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
@@ -71,13 +72,13 @@ namespace Godrej_Korber_DAL.TataCummins
             OracleParameter[] param = new OracleParameter[2];
 
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
             param[1] = new OracleParameter();
             param[1].ParameterName = "PART_NO";
-            param[1].OracleType = OracleType.Int32;
+            param[1].OracleDbType = OracleDbType.Varchar2;
             param[1].Value = stockcount.STK_PRD_COD;
             param[1].Direction = ParameterDirection.Input;
 
@@ -91,13 +92,13 @@ namespace Godrej_Korber_DAL.TataCummins
             OracleParameter[] param = new OracleParameter[2];
 
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
             param[1] = new OracleParameter();
             param[1].ParameterName = "AISL_ID";
-            param[1].OracleType = OracleType.Int32;
+            param[1].OracleDbType = OracleDbType.Int32;
             param[1].Value = stockcount.LOC_AISL_ID;
             param[1].Direction = ParameterDirection.Input;
 
@@ -111,19 +112,19 @@ namespace Godrej_Korber_DAL.TataCummins
             OracleParameter[] param = new OracleParameter[3];
 
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Number;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
             param[1] = new OracleParameter();
             param[1].ParameterName = "YOGESH";
-            param[1].OracleType = OracleType.Int32;
+            param[1].OracleDbType = OracleDbType.Int32;
             param[1].Value = items.HU_ID;
             param[1].Direction = ParameterDirection.Input;
 
             param[2] = new OracleParameter();
             param[2].ParameterName = "AJIT";
-            param[2].OracleType = OracleType.NVarChar;
+            param[2].OracleDbType = OracleDbType.Varchar2;
             param[2].Value = hupar3;
             param[2].Direction = ParameterDirection.Input;
 
@@ -137,37 +138,37 @@ namespace Godrej_Korber_DAL.TataCummins
             OracleParameter[] param = new OracleParameter[6];
 
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
             param[1] = new OracleParameter();
             param[1].ParameterName = "STK_PRD_COD";
-            param[1].OracleType = OracleType.VarChar;
+            param[1].OracleDbType = OracleDbType.Varchar2;
             param[1].Value = items.STK_PRD_COD;
             param[1].Direction = ParameterDirection.Input;
 
             param[2] = new OracleParameter();
             param[2].ParameterName = "STK_PRD_QTY";
-            param[2].OracleType = OracleType.Int32;
+            param[2].OracleDbType = OracleDbType.Int32;
             param[2].Value = items.STK_PRD_QTY;
             param[2].Direction = ParameterDirection.Input;
 
             param[3] = new OracleParameter();
             param[3].ParameterName = "HU_ID";
-            param[3].OracleType = OracleType.Int32;
+            param[3].OracleDbType = OracleDbType.Int32;
             param[3].Value = items.HU_ID;
             param[3].Direction = ParameterDirection.Input;
 
             param[4] = new OracleParameter();
             param[4].ParameterName = "USERNAME";
-            param[4].OracleType = OracleType.VarChar;
+            param[4].OracleDbType = OracleDbType.Varchar2;
             param[4].Value = items.USERNAME;
             param[4].Direction = ParameterDirection.Input;
 
             param[5] = new OracleParameter();
             param[5].ParameterName = "USER_ID";
-            param[5].OracleType = OracleType.VarChar;
+            param[5].OracleDbType = OracleDbType.Varchar2;
             param[5].Value = items.USER_ID;
             param[5].Direction = ParameterDirection.Input;
 
@@ -181,43 +182,43 @@ namespace Godrej_Korber_DAL.TataCummins
             OracleParameter[] param = new OracleParameter[7];
 
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
             param[1] = new OracleParameter();
             param[1].ParameterName = "STK_PRD_COD";
-            param[1].OracleType = OracleType.VarChar;
+            param[1].OracleDbType = OracleDbType.Varchar2;
             param[1].Value = items.STK_PRD_COD;
             param[1].Direction = ParameterDirection.Input;
 
             param[2] = new OracleParameter();
             param[2].ParameterName = "STK_PRD_QTY";
-            param[2].OracleType = OracleType.Int32;
+            param[2].OracleDbType = OracleDbType.Int32;
             param[2].Value = items.STK_PRD_QTY;
             param[2].Direction = ParameterDirection.Input;
 
             param[3] = new OracleParameter();
             param[3].ParameterName = "ID_HU";
-            param[3].OracleType = OracleType.Int32;
+            param[3].OracleDbType = OracleDbType.Int32;
             param[3].Value = items.HU_ID;
             param[3].Direction = ParameterDirection.Input;
 
             param[4] = new OracleParameter();
             param[4].ParameterName = "USERNAME";
-            param[4].OracleType = OracleType.VarChar;
+            param[4].OracleDbType = OracleDbType.Varchar2;
             param[4].Value = items.USERNAME;
             param[4].Direction = ParameterDirection.Input;
 
             param[5] = new OracleParameter();
             param[5].ParameterName = "USER_ID";
-            param[5].OracleType = OracleType.VarChar;
+            param[5].OracleDbType = OracleDbType.Varchar2;
             param[5].Value = items.USER_ID;
             param[5].Direction = ParameterDirection.Input;
 
             param[6] = new OracleParameter();
             param[6].ParameterName = "PAR3_HU";
-            param[6].OracleType = OracleType.NVarChar;
+            param[6].OracleDbType = OracleDbType.Varchar2;
             param[6].Value = hupar3;
             param[6].Direction = ParameterDirection.Input;
 
@@ -231,13 +232,13 @@ namespace Godrej_Korber_DAL.TataCummins
             OracleParameter[] param = new OracleParameter[2];
 
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
             param[1] = new OracleParameter();
             param[1].ParameterName = "ID_HU";
-            param[1].OracleType = OracleType.Int32;
+            param[1].OracleDbType = OracleDbType.Int32;
             param[1].Value = PalletId;
             param[1].Direction = ParameterDirection.Input;
 
@@ -251,37 +252,37 @@ namespace Godrej_Korber_DAL.TataCummins
             OracleParameter[] param = new OracleParameter[6];
 
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
             param[1] = new OracleParameter();
             param[1].ParameterName = "AVA_QTY";
-            param[1].OracleType = OracleType.VarChar;
+            param[1].OracleDbType = OracleDbType.Int32;
             param[1].Value = stockmodel.STK_PRD_QTY;
             param[1].Direction = ParameterDirection.Input;
 
             param[2] = new OracleParameter();
             param[2].ParameterName = "ID_HU";
-            param[2].OracleType = OracleType.Int32;
+            param[2].OracleDbType = OracleDbType.Int32;
             param[2].Value = stockmodel.HU_ID;
             param[2].Direction = ParameterDirection.Input;
 
             param[3] = new OracleParameter();
             param[3].ParameterName = "PART_NO";
-            param[3].OracleType = OracleType.Int32;
+            param[3].OracleDbType = OracleDbType.Int32;
             param[3].Value = stockmodel.STK_PRD_COD;
             param[3].Direction = ParameterDirection.Input;
 
             param[4] = new OracleParameter();
             param[4].ParameterName = "USERNAME";
-            param[4].OracleType = OracleType.VarChar;
+            param[4].OracleDbType = OracleDbType.Varchar2;
             param[4].Value = stockmodel.USERNAME;
             param[4].Direction = ParameterDirection.Input;
 
             param[5] = new OracleParameter();
             param[5].ParameterName = "USER_ID";
-            param[5].OracleType = OracleType.VarChar;
+            param[5].OracleDbType = OracleDbType.Varchar2;
             param[5].Value = stockmodel.USER_ID;
             param[5].Direction = ParameterDirection.Input;
 

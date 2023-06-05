@@ -3,7 +3,6 @@ using Godrej_Korber_Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
-using System.Web.Http.Results;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Godrej_Korber_WebAPI.Controllers
@@ -14,7 +13,7 @@ namespace Godrej_Korber_WebAPI.Controllers
 
         DataTable dt = new DataTable();
         OrderINViewDL OrderINDal = new OrderINViewDL();
-        PalletizationDL palletDl = new PalletizationDL();
+        //PalletizationDL palletDl = new PalletizationDL();
 
 
         [Route("api/OrderINView/GetOrderdetail")]

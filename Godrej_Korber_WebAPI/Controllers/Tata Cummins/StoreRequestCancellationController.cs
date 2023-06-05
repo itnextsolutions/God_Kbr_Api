@@ -37,7 +37,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
            
             foreach (StoreRequestCancellationModel items in storeRequestCancellations)
             {
-                dt = ObjGetStoreOutRequestCancellation.UpdateRequestCancelletion(items);
+                dt = ObjGetStoreOutRequestCancellation.UpdateOrderItem(items);
 
             }
             return new JsonResult("Operation Success");

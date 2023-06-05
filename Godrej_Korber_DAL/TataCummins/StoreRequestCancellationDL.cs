@@ -2,7 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.OracleClient;
+//using System.Data.OracleClient;
+using Oracle.ManagedDataAccess.Client;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace Godrej_Korber_DAL.TataCummins
             OracleParameter[] param = new OracleParameter[1];
 
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
@@ -35,13 +36,13 @@ namespace Godrej_Korber_DAL.TataCummins
             OracleParameter[] param = new OracleParameter[2];
 
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
             param[1] = new OracleParameter();
             param[1].ParameterName = "ID_ORD";
-            param[1].OracleType = OracleType.Int32;
+            param[1].OracleDbType = OracleDbType.Int32;
             param[1].Value = items.ORD_ID ;
             param[1].Direction = ParameterDirection.Input;
 
@@ -57,7 +58,7 @@ namespace Godrej_Korber_DAL.TataCummins
 
             param[0] = new OracleParameter();
             param[0].ParameterName = "OCUR";
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].Direction = ParameterDirection.Output;
             dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.TATACUMMINSREQUESTINCANCELLETION", param);
             return dtResult;
@@ -69,13 +70,13 @@ namespace Godrej_Korber_DAL.TataCummins
 
             param[0] = new OracleParameter();
             param[0].ParameterName = "ID_HU";
-            param[0].OracleType = OracleType.Int32;
+            param[0].OracleDbType = OracleDbType.Int32;
             param[0].Value = data.HU_ID;
             param[0].Direction = ParameterDirection.Input;
 
             param[1] = new OracleParameter();
             param[1].ParameterName = "OCUR";
-            param[1].OracleType = OracleType.Cursor;
+            param[1].OracleDbType = OracleDbType.RefCursor;
             param[1].Direction = ParameterDirection.Output;
             dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.UPDATE_IN_HUNIT", param);
             return dtResult;

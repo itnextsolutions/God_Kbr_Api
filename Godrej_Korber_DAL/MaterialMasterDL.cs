@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.OracleClient;
+//using System.Data.OracleClient;
 using System.Data.SqlClient;
+using Oracle.ManagedDataAccess.Client;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -29,7 +30,7 @@ namespace Godrej_Korber_DAL
 
             OracleParameter[] param = new OracleParameter[1];
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
@@ -44,7 +45,7 @@ namespace Godrej_Korber_DAL
 
             OracleParameter[] param = new OracleParameter[1];
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
@@ -59,7 +60,7 @@ namespace Godrej_Korber_DAL
 
             OracleParameter[] param = new OracleParameter[1];
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
@@ -73,7 +74,7 @@ namespace Godrej_Korber_DAL
 
             OracleParameter[] param = new OracleParameter[1];
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 
@@ -89,7 +90,7 @@ namespace Godrej_Korber_DAL
 
             OracleParameter[] param = new OracleParameter[1];
             param[0] = new OracleParameter();
-            param[0].OracleType = OracleType.Cursor;
+            param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
 

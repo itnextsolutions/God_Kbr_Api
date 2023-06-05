@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.OracleClient;
+//using System.Data.OracleClient;
+using Oracle.ManagedDataAccess.Client;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -21,8 +22,9 @@ namespace Godrej_Korber_DAL
         private OracleConnection conn;
         //public readonly string CON_STRING = Convert.ToString(ConfigurationManager.ConnectionStrings["ConnectionString"]);
 
-        public readonly string CON_STRING = "(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = DESKTOP-44Q6036)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = WMS19))); User Id = MRFWMS; Password=SYSEFA;";
+       public readonly string CON_STRING = "Data Source=(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = DESKTOP-PVUAOLF)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = WMS19))); User Id = MRFWMS; Password=SYSEFA;";
 
+       // public readonly string CON_STRING = "Data Source=<DESKTOP-PVUAOLF>;User Id=<MRFWMS>;Password=<SYSEFA>;"; 
         //public static string GetConnectionString()
         //{
         //    return Convert.ToString(ConfigurationManager.ConnectionStrings["ConnectionString"]);
@@ -106,7 +108,7 @@ namespace Godrej_Korber_DAL
                         int ds_i = 0;
                         foreach (var parms in cmdParms)
                         {
-                            if (parms.OracleType == OracleType.Cursor)
+                            if (parms.OracleDbType == OracleDbType.RefCursor)
                             {
                                 ds.Tables[ds_i].TableName = parms.ParameterName;
                                 ds_i++;
@@ -541,7 +543,7 @@ namespace Godrej_Korber_DAL
                         int ds_i = 0;
                         foreach (var parms in cmdParms)
                         {
-                            if (parms.OracleType == OracleType.Cursor)
+                            if (parms.OracleDbType == OracleDbType.RefCursor)
                             {
                                 dt.TableName = parms.ParameterName;
                                 ds_i++;

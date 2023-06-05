@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Godrej_Korber_Shared.Models;
-using System.Data.OracleClient;
+//using System.Data.OracleClient;
+using Oracle.ManagedDataAccess.Client;
+
 
 namespace Godrej_Korber_DAL
 {
@@ -25,7 +27,7 @@ namespace Godrej_Korber_DAL
                 OracleParameter[] param = new OracleParameter[1];
 
                 param[0] = new OracleParameter();
-                param[0].OracleType = OracleType.Cursor;
+                param[0].OracleDbType = OracleDbType.RefCursor;
                 param[0].ParameterName = "OCUR";
 
                 param[0].Direction = ParameterDirection.Output;
