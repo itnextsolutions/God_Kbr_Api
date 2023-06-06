@@ -26,7 +26,7 @@ namespace Godrej_Korber_DAL.TataCummins
 
             param[0] = new OracleParameter();
             param[0].ParameterName = "PALLET_NUMBER";
-            param[0].OracleDbType = OracleDbType.NVarchar2;
+            param[0].OracleDbType = OracleDbType.Int32;
             param[0].Value = palletnumber;
             param[0].Direction = ParameterDirection.Input;
 
