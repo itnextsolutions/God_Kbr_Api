@@ -11,5 +11,7 @@ namespace Godrej_Korber_Shared.Models
         public string username { get; set; }
 
         public string password { get; set; }
+        public string RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Godrej_Korber_DAL;
 using Godrej_Korber_Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -54,6 +55,11 @@ namespace Godrej_Korber_WebAPI.Controllers
 
                 var token = GenerateToken(login.username);
 
+                //var newAccessToken = token;
+                //var newRefreshToken = CreateRefreshToken();
+                //login.RefreshToken = newRefreshToken;
+                //await _configuration.SaveChangesAsync();
+
                 return Ok(new {
 
                     Message = "Success",
@@ -62,6 +68,12 @@ namespace Godrej_Korber_WebAPI.Controllers
 
 
                 }); ;
+
+                //return Ok(new TokenApiDto()
+                //{
+                //    AccessToken = newAccessToken,
+                //    RefreshToken = newRefreshToken
+                //});
 
             }
             else
@@ -114,8 +126,10 @@ namespace Godrej_Korber_WebAPI.Controllers
             };
             var token = new JwtSecurityToken(
 
-                issuer: _configuration["jwt : Issuer"],
-                audience: _configuration["jwt : Audience"],
+                issuer: "https://localhost:4200/",
+                audience: "https://localhost:4200/",
+                //issuer: _configuration["jwt : Issuer"],
+                //audience: _configuration["jwt : Audience"],
                 claims,
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: credential
@@ -124,6 +138,42 @@ namespace Godrej_Korber_WebAPI.Controllers
             return  tokenhandler.WriteToken(token);
         }
 
+        //private string CreateRefreshToken()
+        //{
+        //    var tokenBytes = RandomNumberGenerator.GetBytes(64);
+        //    var refreshToken = Convert.ToBase64String(tokenBytes);
+
+        //    var tokenInUser = login.username
+        //        .Any(async => RefreshToken == refreshToken);
+        //    if (tokenInUser)
+        //    {
+        //        return CreateRefreshToken();
+        //    }
+        //    return CreateRefreshToken();
+        //}
+
+        //private ClaimsPrincipal GetPrincipleFromExpiredToken(string token)
+        //{
+        //    var key = Encoding.UTF8.GetBytes("thisisveryveryimportantkey");
+        //    var tokenValidationParamters = new TokenValidationParameters
+        //    {
+        //        ValidateAudience = false,
+        //        ValidateIssuer = false,
+        //        ValidateIssuerSigningKey = true,
+        //        IssuerSigningKey = new SymmetricSecurityKey(key),
+        //        ValidateLifetime = false
+        //    };
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    SecurityToken securityToken;
+        //    var principal = tokenHandler.ValidateToken(token, tokenValidationParamters, out securityToken);
+        //    var jwtSecurityToken = securityToken as JwtSecurityToken;
+        //    if(jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,StringComparison.InvariantCultureIgnoreCase)) 
+        //    {
+        //        throw new SecurityTokenException("This is an Invalid Token");
+        //    }
+        //    return principal;    
+
+        //}
         protected string decrypt_pwd(string password)
         {
             int i = Convert.ToInt32(password.Length);
@@ -148,6 +198,24 @@ namespace Godrej_Korber_WebAPI.Controllers
             return sResult;
         }
 
+        [HttpGet]
+        [Route("api/Users")]
+        public ActionResult GetAllUsers()
+        {
+            dtResult = objLogin.GetUsers();
+            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+            Dictionary<string, object> childRow;
+            foreach (DataRow row in dtResult.Rows)
+            {
+                childRow = new Dictionary<string, object>();
+                foreach (DataColumn col in dtResult.Columns)
+                {
+                    childRow.Add(col.ColumnName, row[col]);
+                }
+                parentRow.Add(childRow);
+            }
+            return new JsonResult(parentRow);
+        }
 
     }
 }

@@ -56,5 +56,19 @@ namespace Godrej_Korber_DAL
             dtResult = objoracleHelper.ExecuteDataTable(objoracleHelper.GetConnection(), CommandType.StoredProcedure, "SP_GET_LOGIN_DETAILS", param);
             return dtResult;
         }
+
+        public DataTable GetUsers()
+        {
+            DataTable dt = new DataTable();
+
+            OracleParameter[] param = new OracleParameter[1];
+            param[0] = new OracleParameter();
+            param[0].OracleDbType = OracleDbType.RefCursor;
+            param[0].ParameterName = "OCUR";
+            param[0].Direction = ParameterDirection.Output;
+
+            dt = objoracleHelper.ExecuteDataTable(objoracleHelper.GetConnection(), CommandType.StoredProcedure, "MRFWMS.GetAllUsers", param);
+            return dt;
+        }
     }
 }
