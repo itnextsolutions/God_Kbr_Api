@@ -10,6 +10,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.Extensions.Configuration;
 
 namespace Godrej_Korber_DAL
 {
@@ -20,15 +21,21 @@ namespace Godrej_Korber_DAL
         public OracleParameter[] cmdParameter;
 
         private OracleConnection conn;
-        //public readonly string CON_STRING = Convert.ToString(ConfigurationManager.ConnectionStrings["ConnectionString"]);
 
-       public readonly string CON_STRING = "Data Source=(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = DESKTOP-PVUAOLF)(PORT = 1521)))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = WMS19))); User Id = MRFWMS; Password=SYSEFA;";
+        private static IConfiguration _configuration;
 
-       // public readonly string CON_STRING = "Data Source=<DESKTOP-PVUAOLF>;User Id=<MRFWMS>;Password=<SYSEFA>;"; 
-        //public static string GetConnectionString()
+        public static void Configure(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        //public static OracleConnection GetOracleConnection()
         //{
-        //    return Convert.ToString(ConfigurationManager.ConnectionStrings["ConnectionString"]);
+        //    string connectionString = _configuration.GetConnectionString("OracleDBConnection");
+        //    return new OracleConnection(connectionString);
         //}
+
+
         public OracleConnection GetConnection()
         {
             try
@@ -36,7 +43,7 @@ namespace Godrej_Korber_DAL
                 if (conn == null)
                 {
                     conn = new OracleConnection();
-                    conn.ConnectionString = CON_STRING;
+                    conn.ConnectionString = _configuration.GetConnectionString("OracleDBConnection");
                     // conn.ConnectionString = DLLStringEncrypt.DecryptString(CON_STRING, "ART");
                     conn.Open();
                     return conn;
