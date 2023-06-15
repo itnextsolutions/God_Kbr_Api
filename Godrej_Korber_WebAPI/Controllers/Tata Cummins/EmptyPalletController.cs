@@ -2,6 +2,7 @@
 using Godrej_Korber_Shared.Models.TataCummins;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,6 +15,10 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
         DataTable dt = new DataTable();
         EmptyPalletDL objEmptyPalletOut = new EmptyPalletDL();
+
+        private readonly ISession _session;
+
+       
 
         // GET: api/<EmptyOutController>
         [Route("api/EmptyPalletOut/GetEmptyPalletOut")]
@@ -59,23 +64,18 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
         [HttpPost]
         public ActionResult InsertEmptyPalletData([FromBody] EmptyPallet emptyPalletData)
         {
+            
 
             emptyPalletData.HU_CRE_WKS_ID = System.Environment.MachineName;
             emptyPalletData.HU_CRE_USER = "Ajit Sonvane";
 
             dt = objEmptyPalletOut.InsertEmptyPallet(emptyPalletData);
 
-            int output = Convert.ToInt32(dt.Rows[0][0]);
+            //string output = Convert.ToString(dt.Rows[0][0]);
 
-            if (output == 1)
-            {
-                return new JsonResult("Success");
-            }
+              int output = Convert.ToInt32(dt.Rows[0][0]);
 
-            else
-            {
-                return new JsonResult("Failed");
-            }
+            return new JsonResult(output);
         }
 
 
@@ -85,24 +85,17 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
         {
             foreach (var data in emptyPallet)
             {
-                //objEmptyPalletOut.data = data.HU_ID;
-                //data.MSG_WRK_STN = System.Environment.MachineName;
-                //data.MSG_WRK_USER = "SONALI KAMBLE";
+                
+                data.HU_CRE_USER = System.Environment.MachineName;
+                data.HU_CRE_WKS_ID = "SONALI KAMBLE";
 
                 dt = objEmptyPalletOut.UpdateEmptyPalletcheck(data);
             }
 
+            //string output = Convert.ToString(dt.Rows[0][0]);
             int output = Convert.ToInt32(dt.Rows[0][0]);
 
-            if (output == 1)
-            {
-                return new JsonResult("Success");
-            }
-
-            else
-            {
-                return new JsonResult("Failed");
-            }
+            return new JsonResult(output);
 
         }
 
