@@ -21,11 +21,11 @@ namespace Godrej_Korber_WebAPI.Controllers
         DataTable dtResult = new DataTable();
         LoginDL objLogin = new LoginDL();
 
-        private readonly IConfiguration _configuration;
+        private static IConfiguration _configuration;
 
-        public LoginController( IConfiguration config)
+        public static void Configure(IConfiguration configuration)
         {
-            _configuration = config;
+            _configuration = configuration;
         }
 
         // POST api/<LoginController>
@@ -60,12 +60,17 @@ namespace Godrej_Korber_WebAPI.Controllers
                 //login.RefreshToken = newRefreshToken;
                 //await _configuration.SaveChangesAsync();
 
+                string  User_Group= Convert.ToString(dtResult.Rows[0][0]);
+
+                dtResult = objLogin.Get_User_Role(User_Group);
+                string Role_ID = Convert.ToString(dtResult.Rows[0][0]);
+
                 return Ok(new {
 
                     Message = "Success",
                     User = parentRow,
-                    jwtToken =token
-
+                    jwtToken =token,
+                    Role= Role_ID
 
                 }); ;
 
@@ -116,20 +121,17 @@ namespace Godrej_Korber_WebAPI.Controllers
         {
 
             var tokenhandler = new JwtSecurityTokenHandler();
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("thisisveryveryimportantkey"));
-            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["jwt : key"]))
+            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("thisisveryveryimportantkey"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("jwt:key")));
             var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name,username),
-                new Claim("CompanyName","Lets Program")
+                new Claim(ClaimTypes.Name,username)
+                //new Claim("CompanyName","Lets Program")
             };
             var token = new JwtSecurityToken(
-
-                issuer: "https://localhost:4200/",
-                audience: "https://localhost:4200/",
-                //issuer: _configuration["jwt : Issuer"],
-                //audience: _configuration["jwt : Audience"],
+                issuer: _configuration.GetValue<string>("jwt:Issuer"),
+                audience: _configuration.GetValue<string>("jwt:Audience"),
                 claims,
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: credential
@@ -189,8 +191,6 @@ namespace Godrej_Korber_WebAPI.Controllers
 
                 iVal = 159 - Convert.ToInt32(sAscii[0]);
                 cRes = Convert.ToChar(iVal);
-
-
 
                 sResult = sResult + cRes;
             }

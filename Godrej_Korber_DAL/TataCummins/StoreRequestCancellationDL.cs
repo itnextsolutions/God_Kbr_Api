@@ -1,13 +1,8 @@
 ﻿using Godrej_Korber_Shared.Models.TataCummins;
-using System;
-using System.Collections.Generic;
 using System.Data;
 //using System.Data.OracleClient;
 using Oracle.ManagedDataAccess.Client;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Godrej_Korber_DAL.TataCummins
 {
@@ -17,69 +12,154 @@ namespace Godrej_Korber_DAL.TataCummins
         OracleHelper objOracleHelper = new OracleHelper();
         DataTable dtResult = new DataTable();
 
-        public DataTable GetStoreOutRequestCancellation()
+        private readonly ILogger<StoreRequestCancellationDL> _logger;
+
+        public StoreRequestCancellationDL(ILogger<StoreRequestCancellationDL> logger)
         {
-            OracleParameter[] param = new OracleParameter[1];
-
-            param[0] = new OracleParameter();
-            param[0].OracleDbType = OracleDbType.RefCursor;
-            param[0].ParameterName = "OCUR";
-            param[0].Direction = ParameterDirection.Output;
-
-            
-            dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.GET_STORE_OUT_REQUEST_CANCELLATION", param);
-            return dtResult;
+            _logger = logger;
         }
 
-        public DataTable UpdateOrderItem(StoreRequestCancellationModel items)
+        public DataTable GetStoreOutRequestCancellation(string Username)
         {
-            OracleParameter[] param = new OracleParameter[2];
+            try
+            {
+                OracleParameter[] param = new OracleParameter[1];
 
-            param[0] = new OracleParameter();
-            param[0].OracleDbType = OracleDbType.RefCursor;
-            param[0].ParameterName = "OCUR";
-            param[0].Direction = ParameterDirection.Output;
+                param[0] = new OracleParameter();
+                param[0].OracleDbType = OracleDbType.RefCursor;
+                param[0].ParameterName = "OCUR";
+                param[0].Direction = ParameterDirection.Output;
 
-            param[1] = new OracleParameter();
-            param[1].ParameterName = "ID_ORD";
-            param[1].OracleDbType = OracleDbType.Int32;
-            param[1].Value = items.ORD_ID ;
-            param[1].Direction = ParameterDirection.Input;
+                dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.SP_GET_STORE_OUT_REQUEST_CANCELLATION", param);
+               
+                if (dtResult != null)
+                {
+                    _logger.LogInformation("Retrived The Data Successfully By This User = " + Username);
+                }
 
-
-
-            dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.UPDATE_IN_ORDER_ITEM", param);
-            return dtResult;
+                return dtResult;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("Exception Occurs " + ex);
+                return dtResult;
+            }
         }
 
-        public DataTable GetRequestINCancelletion()
+        public DataTable UpdateOrderItem(StoreRequestCancellationModel items,string Username)
         {
-            OracleParameter[] param = new OracleParameter[1];
+            try
+            {
+                OracleParameter[] param = new OracleParameter[2];
 
-            param[0] = new OracleParameter();
-            param[0].ParameterName = "OCUR";
-            param[0].OracleDbType = OracleDbType.RefCursor;
-            param[0].Direction = ParameterDirection.Output;
-            dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.TATACUMMINSREQUESTINCANCELLETION", param);
-            return dtResult;
+                param[0] = new OracleParameter();
+                param[0].OracleDbType = OracleDbType.RefCursor;
+                param[0].ParameterName = "OCUR";
+                param[0].Direction = ParameterDirection.Output;
+
+                param[1] = new OracleParameter();
+                param[1].ParameterName = "P_ORD_ID";
+                param[1].OracleDbType = OracleDbType.Int32;
+                param[1].Value = items.ORD_ID;
+                param[1].Direction = ParameterDirection.Input;
+                
+                dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.SP_UPDATE_IN_ORDER_ITEM", param);
+                
+                int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
+                if (UpdateOutput == 0)
+                {
+                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + Username+ " Which Is ORD_ID ="+ items.ORD_ID);
+                    return dtResult;
+                }
+                else if (UpdateOutput == 1)
+                {
+                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + Username+ " Which Is ORD_ID ="+ items.ORD_ID);
+                    return dtResult;
+                }
+                else
+                {
+                    _logger.LogInformation("NO, Response From Database");
+                    return dtResult;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("Exception Occurs " + ex);
+                return dtResult;
+            }
+
         }
 
-        public DataTable UpdateRequestCancelletion(StoreRequestCancellationModel data)
+        public DataTable GetRequestINCancelletion(string Username)
         {
-            OracleParameter[] param = new OracleParameter[2];
+            try
+            {
+                OracleParameter[] param = new OracleParameter[1];
 
-            param[0] = new OracleParameter();
-            param[0].ParameterName = "ID_HU";
-            param[0].OracleDbType = OracleDbType.Int32;
-            param[0].Value = data.HU_ID;
-            param[0].Direction = ParameterDirection.Input;
+                param[0] = new OracleParameter();
+                param[0].ParameterName = "OCUR";
+                param[0].OracleDbType = OracleDbType.RefCursor;
+                param[0].Direction = ParameterDirection.Output;
+                
+                dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.SP_TATACUMMINSREQUESTINCANCELLETION", param);
 
-            param[1] = new OracleParameter();
-            param[1].ParameterName = "OCUR";
-            param[1].OracleDbType = OracleDbType.RefCursor;
-            param[1].Direction = ParameterDirection.Output;
-            dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.UPDATE_IN_HUNIT", param);
-            return dtResult;
+                if (dtResult != null)
+                {
+                    _logger.LogInformation("Retrived The Data Successfully By This User = " + Username);
+                }
+
+                return dtResult;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("Exception Occurs " + ex);
+                return dtResult;
+            }
+
+        }
+
+        public DataTable UpdateRequestCancelletion(StoreRequestCancellationModel data,string Username)
+        {
+            try
+            {
+                OracleParameter[] param = new OracleParameter[2];
+
+                param[0] = new OracleParameter();
+                param[0].ParameterName = "OCUR";
+                param[0].OracleDbType = OracleDbType.RefCursor;
+                param[0].Direction = ParameterDirection.Output;
+
+                param[1] = new OracleParameter();
+                param[1].ParameterName = "P_HU_ID";
+                param[1].OracleDbType = OracleDbType.Int32;
+                param[1].Value = data.HU_ID;
+                param[1].Direction = ParameterDirection.Input;
+
+                dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.SP_UPDATE_IN_HUNIT", param);
+
+                int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
+                if (UpdateOutput == 0)
+                {
+                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + Username + " Which Is HU_ID =" + data.HU_ID);
+                    return dtResult;
+                }
+                else if (UpdateOutput == 1)
+                {
+                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + Username + " Which Is HU_ID =" + data.HU_ID);
+                    return dtResult;
+                }
+                else
+                {
+                    _logger.LogInformation("NO, Response From Database");
+                    return dtResult;
+                }
+            }
+            catch(Exception ex) 
+            {
+                _logger.LogWarning("Exception Occurs " + ex);
+                return dtResult;
+            }
+           
 
         }
     }

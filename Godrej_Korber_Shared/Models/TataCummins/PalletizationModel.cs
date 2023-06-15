@@ -9,7 +9,7 @@ namespace Godrej_Korber_Shared.Models.TataCummins
     public class PalletizationModel
     {
 
-        public int ORD_REQ_QTY { get; set; }
+        public double ORD_REQ_QTY { get; set; }
 
         public int ORD_ID { get; set; }
 
@@ -20,6 +20,10 @@ namespace Godrej_Korber_Shared.Models.TataCummins
         public string ORD_INSPECT_NR { get; set; }
 
         public string ORD_HU_BAR_COD { get; set; }
+
+        public string UserName { get; set; }
+
+        public string UserID { get; set; }
 
     }
 }

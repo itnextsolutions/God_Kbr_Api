@@ -1,35 +1,78 @@
 ﻿using Godrej_Korber_DAL.TataCummins;
 using Godrej_Korber_Shared.Models.TataCummins;
+using Godrej_Korber_WebAPI.Controllers.Common;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 {
-    
     public class StockCountController : ControllerBase
     {
         DataTable dt = new DataTable();
-        StockCountDL objStockCount = new StockCountDL();
+
+        //StockCountDL objStockCount = new StockCountDL();
+        private readonly ILogger<StockCountController> _logger;
+        private readonly StockCountDL objStockCount;
+
+        public StockCountController(ILogger<StockCountController> logger, StockCountDL stockDAL)
+        {
+            _logger = logger;
+            objStockCount = stockDAL;
+        }
+        public ActionResult<Dictionary<string, string>> GetAllHeaders()
+        {
+            Dictionary<string, string> requestHeaders =
+               new Dictionary<string, string>();
+            foreach (var header in Request.Headers)
+            {
+                requestHeaders.Add(header.Key,header.Value);
+            }
+            return requestHeaders;
+        }
+
+
+        public ActionResult<string> GetHeaderData(string headerKey)
+        {
+            Request.Headers.TryGetValue("username", out var headerValue);
+
+            return Ok(headerValue);
+        }
+
 
         [Route("api/StockCount/GetStockCount")]
         [HttpGet]
         public JsonResult GetStockCount()
         {
-            dt = objStockCount.GetStockCount();
-            
-            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
-            Dictionary<string, object> childRow;
-            foreach (DataRow row in dt.Rows)
+            var header = GetAllHeaders();
+
+            var values = GetHeaderData(Convert.ToString(header));
+
+            var headerValues = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
+
+            _logger.LogInformation("Intialization Of Stock Count Process Has Been Started By this User = " + headerValues);
+
+            dt = objStockCount.GetStockCount(headerValues);
+
+            if (dt != null)
             {
-                childRow = new Dictionary<string, object>();
-                foreach (DataColumn col in dt.Columns)
+                List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+                Dictionary<string, object> childRow;
+                foreach (DataRow row in dt.Rows)
                 {
-                    childRow.Add(col.ColumnName, row[col]);
+                    childRow = new Dictionary<string, object>();
+                    foreach (DataColumn col in dt.Columns)
+                    {
+                        childRow.Add(col.ColumnName, row[col]);
+                    }
+                    parentRow.Add(childRow);
                 }
-                parentRow.Add(childRow);
+                return new JsonResult(parentRow);
             }
-            return new JsonResult(parentRow);
+            _logger.LogInformation("There Is No Data Database As Per Your Requirement,Count Was Null");
+            return new JsonResult("There Is No Data Database As Per Your Requirement");
+
         }
 
         [Route("api/StockCount/GetPalletDetails")]
@@ -37,30 +80,54 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public JsonResult GetPalletDetails(string partno, string grno)
         {
-            dt = objStockCount.GetPalletDetails(partno, grno);
-            if(dt != null) 
+            var header = GetAllHeaders();
+
+            var values = GetHeaderData(Convert.ToString(header));
+
+            var headerValues = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
+
+            if(partno != null && grno != null)
             {
-                List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
-                Dictionary<string, object> childRow;
-                foreach (DataRow row in dt.Rows)
+                _logger.LogInformation("Intialization Of Stock Count Process Has Been Started By this User = " + headerValues);
+
+                dt = objStockCount.GetPalletDetails(partno, grno, headerValues);
+                if (dt != null)
                 {
-                    childRow = new Dictionary<string, object>();
-                    foreach (DataColumn col in dt.Columns)
+                    List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+                    Dictionary<string, object> childRow;
+                    foreach (DataRow row in dt.Rows)
                     {
-                        childRow.Add(col.ColumnName, row[col]);
+                        childRow = new Dictionary<string, object>();
+                        foreach (DataColumn col in dt.Columns)
+                        {
+                            childRow.Add(col.ColumnName, row[col]);
+                        }
+                        parentRow.Add(childRow);
                     }
-                    parentRow.Add(childRow);
+                    return new JsonResult(parentRow);
                 }
-                return new JsonResult(parentRow);
+                _logger.LogInformation("There Is No Data In Database As Per Your Requirement,Count Was Null");
+                return new JsonResult("There Is No Data In Database As Per Your Requirement");
             }
-            return new JsonResult("Failed");
+            _logger.LogInformation("Null Data Is Coming");
+            return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
+
         }
 
         [Route("api/StockCount/GetPalletDetails1")]
         [HttpGet]
         public JsonResult GetPalletDetails1()
         {
-            dt = objStockCount.GetPalletDetails1();
+            var header = GetAllHeaders();
+
+            var values = GetHeaderData(Convert.ToString(header));
+
+            var headerValues = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
+
+            _logger.LogInformation("Intialization Of Stock Count Process Has Been Started By this User = " + headerValues);
+
+            dt = objStockCount.GetPalletDetails1(headerValues);
+
             if (dt != null)
             {
                 List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
@@ -76,68 +143,111 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 }
                 return new JsonResult(parentRow);
             }
-            return new JsonResult("Failed");
+            _logger.LogInformation("There Is No Data In Database As Per Your Requirement,Count Was Null");
+            return new JsonResult("There Is No Data In Database As Per Your Requirement");
         }
 
         [Route("api/StockCount/UpdateInsert")]
         [HttpPost]
         public ActionResult UpdateInsert([FromBody] List<StockCountModel> stockcount)
         {
-            foreach (StockCountModel items in stockcount)
+            var header = GetAllHeaders();
+
+            var values = GetHeaderData(Convert.ToString(header));
+
+            var headerValues = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
+
+
+            if (stockcount != null)
             {
-                dt = objStockCount.GetValidCountForFurtherProcess(items);
-                int output = Convert.ToInt32(dt.Rows[0][0]);
-                if (output == 0)
+                _logger.LogInformation("Updating Of Stock Count Process Has Been Started By this User = " + headerValues);
+
+                foreach (StockCountModel items in stockcount)
                 {
-                    dt = objStockCount.GetHuPar3(items);
+                    dt = objStockCount.GetValidCountForFurtherProcess(items);
 
-                    int hupar3 = Convert.ToInt32(dt.Rows[0][0]);
-                    //string hupar3 = Convert.ToString(dt.Rows[0][0]);
-                    //string huid = Convert.ToString(items.HU_ID);
-                    //dt = objStockCount.UpdateInHunit(items, hupar3);
+                    int output = Convert.ToInt32(dt.Rows[0][0]);
 
-                    //int cursor = Convert.ToInt32(dt.Rows[0][0]);
+                    _logger.LogInformation("Got The Count = " + output);
 
-                    //if (cursor == 1)
-                    //{
-                    //    dt = objStockCount.InsertIntoStockMovt(items);
-                    //}
+                    if (output == 0)
+                    {
+                        dt = objStockCount.GetHuPar3(items);
 
-                    items.USER_ID = "1234";
-                    items.USERNAME = "YOGESH GOLE";
-                    // dt = objStockCount.InsertIntoStockMovt(items);
-                    dt = objStockCount.UpdateAndInsert(items, hupar3);
+                        int hupar3 = Convert.ToInt32(dt.Rows[0][0]);
+
+                        _logger.LogInformation("Got The Aisl ID = " + hupar3);
+
+                        items.USER_ID = System.Environment.MachineName;
+                        items.USERNAME = headerValues;
+
+                        dt = objStockCount.UpdateAndInsert(items, hupar3);
+
+                        int UpdateOutput = Convert.ToInt32(dt.Rows[0][0]);
+                        if (UpdateOutput == 0)
+                        {
+                            _logger.LogInformation("Data Has Not Been Updated & Inserted" );
+                            return new JsonResult("Data Has Not Been Updated & Inserted");
+                        }
+                        else if(UpdateOutput == 1)
+                        {
+                            _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully ");
+                            return new JsonResult("Data Has Been Updated & Inserted Sucessfully ");
+                        }
+                        else
+                        {
+                            _logger.LogInformation("NO, Response From Database");
+                            return new JsonResult("NO, Response From Database");
+                        }
+
+                    }
 
                 }
-                
             }
-            return new JsonResult("Operation Success");
-            
+
+            _logger.LogInformation("Null Data Is Coming");
+            return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
+         
         }
 
         [Route("api/StockCount/StockCountByScannedId")]
         [HttpGet]
         public ActionResult StockCountByScannedId(int palletid)
         {
-            dt = objStockCount.StockCountByScannedId(palletid);
+            var header = GetAllHeaders();
 
-            if (dt != null)
+            var values = GetHeaderData(Convert.ToString(header));
+
+            var headerValues = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
+
+            if (palletid != null)
             {
-                List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
-                Dictionary<string, object> childRow;
-                foreach (DataRow row in dt.Rows)
+                _logger.LogInformation("Intializing The Process Of Getting the Data Of This PalletID ="+palletid+"Has Been Started By These");
+
+                dt = objStockCount.StockCountByScannedId(palletid);
+
+                if (dt != null)
                 {
-                    childRow = new Dictionary<string, object>();
-                    foreach (DataColumn col in dt.Columns)
+                    List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+                    Dictionary<string, object> childRow;
+                    foreach (DataRow row in dt.Rows)
                     {
-                        childRow.Add(col.ColumnName, row[col]);
+                        childRow = new Dictionary<string, object>();
+                        foreach (DataColumn col in dt.Columns)
+                        {
+                            childRow.Add(col.ColumnName, row[col]);
+                        }
+                        parentRow.Add(childRow);
                     }
-                    parentRow.Add(childRow);
+                    return new JsonResult(parentRow);
                 }
-                return new JsonResult(parentRow);
+
+                _logger.LogInformation("This PalleId = " + palletid + "Has Not Data");
+                return new JsonResult("This PalleId = " + palletid + "Has Not Data");
             }
 
-            return new JsonResult("This PalleId Has Not Data");
+            _logger.LogInformation("Null Data Is Coming");
+            return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
 
         }
 
@@ -145,30 +255,41 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
         [HttpGet]
         public ActionResult UpdateInsertForConfirmation(StockCountModel stockCount)
         {
-            //dt = objStockCount.GetHuPar3(items);
 
-            // int hupar3 = Convert.ToInt32(dt.Rows[0][0]);
-            stockCount.USER_ID = "1234";
-            stockCount.USERNAME = "YOGESH GOLE";
-            dt = objStockCount.UpdateInsertForConfirmation(stockCount);
+            var header = GetAllHeaders();
 
-            if (dt != null)
+            var values = GetHeaderData(Convert.ToString(header));
+
+            var headerValues = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
+
+            if(stockCount != null)
             {
-                List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
-                Dictionary<string, object> childRow;
-                foreach (DataRow row in dt.Rows)
-                {
-                    childRow = new Dictionary<string, object>();
-                    foreach (DataColumn col in dt.Columns)
-                    {
-                        childRow.Add(col.ColumnName, row[col]);
-                    }
-                    parentRow.Add(childRow);
-                }
-                return new JsonResult(parentRow);
-            }
+                stockCount.USER_ID = System.Environment.MachineName;
+                stockCount.USERNAME = headerValues;
 
-            return new JsonResult("This PalleId Has Not Data");
+                _logger.LogInformation("Updating Of Stock Count Confirmation Process Has Been Started By this User = " + headerValues);
+
+                dt = objStockCount.UpdateInsertForConfirmation(stockCount);
+
+                int UpdateOutput = Convert.ToInt32(dt.Rows[0][0]);
+                if (UpdateOutput == 0)
+                {
+                    _logger.LogInformation("Data Has Not Been Updated & Inserted");
+                    return new JsonResult("Data Has Not Been Updated & Inserted");
+                }
+                else if (UpdateOutput == 1)
+                {
+                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully ");
+                    return new JsonResult("Data Has Been Updated & Inserted Sucessfully ");
+                }
+                else
+                {
+                    _logger.LogInformation("NO, Response From Database");
+                    return new JsonResult("NO, Response From Database");
+                }
+            }
+            _logger.LogInformation("Null Data Is Coming");
+            return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
 
         }
 
