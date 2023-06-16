@@ -1,5 +1,6 @@
 ﻿
 using Godrej_Korber_Shared.Models.TataCummins;
+using Microsoft.Extensions.Logging;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -16,33 +17,51 @@ namespace Godrej_Korber_DAL.TataCummins
         OracleHelper  objOracleHelper = new OracleHelper();
 
 
+        private readonly ILogger<MaterialPickingDL> _logger;
+
+        public MaterialPickingDL(ILogger<MaterialPickingDL> logger)
+        {
+            _logger = logger;
+        }
+
         public DataTable GET_MATERIAL_PICKING_DATA(int PALLET_ID)
         {
+            try
+            {
+                OracleParameter[] param = new OracleParameter[2];
 
-            OracleParameter[] param = new OracleParameter[2];
+                param[0] = new OracleParameter();
+                param[0].OracleDbType = OracleDbType.RefCursor;
+                param[0].ParameterName = "OCUR";
+                param[0].Direction = ParameterDirection.Output;
 
+                param[1] = new OracleParameter();
+                param[1].OracleDbType = OracleDbType.Int32;
+                param[1].ParameterName = "PALLET_ID";
+                param[1].Value = PALLET_ID;
+                param[1].Direction = ParameterDirection.Input;
 
-            param[0] = new OracleParameter();
-            param[0].OracleDbType = OracleDbType.RefCursor;
-            param[0].ParameterName = "OCUR";
-            param[0].Direction = ParameterDirection.Output;
+                dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "MATERIAL_PICKING.GET_MATERIAL_PICKING_DATA", param);
+                if(dtResult != null)
+                {
+                    _logger.LogInformation("Retrived The Data Successfully Where PalletID = "+ PALLET_ID);
+                    return dtResult;
+                }
+                return dtResult;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("Exception Occurs " + ex);
+                return dtResult;
+            }
 
-
-            param[1] = new OracleParameter();
-            param[1].OracleDbType = OracleDbType.Int32;
-            param[1].ParameterName = "PALLET_ID";
-            param[1].Value = PALLET_ID;
-            param[1].Direction = ParameterDirection.Input;
-
-            dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "MATERIAL_PICKING.GET_MATERIAL_PICKING_DATA", param);
-            return dtResult;
         }
 
         public DataTable UPDATE_MATERIAL_PICKING_DATA(MaterialPickingModel materialData)
         {
 
-            OracleParameter[] param = new OracleParameter[3];
 
+            OracleParameter[] param = new OracleParameter[3];
 
             param[0] = new OracleParameter();
             param[0].OracleDbType = OracleDbType.RefCursor;
@@ -141,11 +160,24 @@ namespace Godrej_Korber_DAL.TataCummins
             param[8].Value = MSG_CRE_WKS_ID;
             param[8].Direction = ParameterDirection.Input;
 
-
-
-
             dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "MATERIAL_PICKING.UPDATE_INSERT_MATERIAL_PICKING", param);
-            return dtResult;
+
+            int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
+            if (UpdateOutput == 0)
+            {
+                _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + MSG_CRE_USER );
+                return dtResult;
+            }
+            else if (UpdateOutput == 1)
+            {
+                _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + MSG_CRE_USER);
+                return dtResult;
+            }
+            else
+            {
+                _logger.LogInformation("NO, Response From Database");
+                return dtResult;
+            }
         }
 
     }

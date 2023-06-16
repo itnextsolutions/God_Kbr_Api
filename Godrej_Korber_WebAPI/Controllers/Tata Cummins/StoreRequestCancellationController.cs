@@ -93,12 +93,12 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                     if (UpdateOutput == 0)
                     {
                         _logger.LogInformation("Data Has Not Been Updated & Inserted By These User ="+ Username);
-                        return new JsonResult("Data Has Not Been Updated & Inserted");
+                        return new JsonResult(UpdateOutput);
                     }
                     else if (UpdateOutput == 1)
                     {
                         _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully ");
-                        return new JsonResult("Data Has Been Updated & Inserted Sucessfully ");
+                        return new JsonResult(UpdateOutput);
                     }
                     else
                     {
@@ -173,12 +173,12 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                     if (UpdateOutput == 0)
                     {
                         _logger.LogInformation("Data Has Not Been Updated & Inserted By These User ="+ Username);
-                        return new JsonResult("Data Has Not Been Updated & Inserted");
+                        return new JsonResult(UpdateOutput);
                     }
                     else if (UpdateOutput == 1)
                     {
                         _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully ");
-                        return new JsonResult("Data Has Been Updated & Inserted Sucessfully ");
+                        return new JsonResult(UpdateOutput);
                     }
                     else
                     {
@@ -188,7 +188,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 }
             }
             _logger.LogInformation("Null Data Is Coming");
-            return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
+            return new JsonResult("Data Is Coming Null ,You Need To Contact With Your Software Devloper");
         }
     }
 }

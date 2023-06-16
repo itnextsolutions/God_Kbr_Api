@@ -1,9 +1,7 @@
 ﻿using Godrej_Korber_DAL.TataCummins;
 using Godrej_Korber_Shared.Models.TataCummins;
-using Godrej_Korber_WebAPI.Controllers.Common;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
@@ -91,7 +89,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 _logger.LogInformation("Intialization Of Stock Count Process Has Been Started By this User = " + headerValues);
 
                 dt = objStockCount.GetPalletDetails(partno, grno, headerValues);
-                if (dt != null)
+                if (dt.Rows.Count > 0)
                 {
                     List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
                     Dictionary<string, object> childRow;
@@ -107,7 +105,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                     return new JsonResult(parentRow);
                 }
                 _logger.LogInformation("There Is No Data In Database As Per Your Requirement,Count Was Null");
-                return new JsonResult("There Is No Data In Database As Per Your Requirement");
+                return new JsonResult(null);
             }
             _logger.LogInformation("Null Data Is Coming");
             return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
@@ -187,21 +185,19 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                         if (UpdateOutput == 0)
                         {
                             _logger.LogInformation("Data Has Not Been Updated & Inserted" );
-                            return new JsonResult("Data Has Not Been Updated & Inserted");
+                            return new JsonResult(UpdateOutput);
                         }
                         else if(UpdateOutput == 1)
                         {
                             _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully ");
-                            return new JsonResult("Data Has Been Updated & Inserted Sucessfully ");
+                            return new JsonResult(UpdateOutput);
                         }
                         else
                         {
                             _logger.LogInformation("NO, Response From Database");
-                            return new JsonResult("NO, Response From Database");
+                            return new JsonResult(UpdateOutput);
                         }
-
                     }
-
                 }
             }
 
@@ -275,17 +271,17 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 if (UpdateOutput == 0)
                 {
                     _logger.LogInformation("Data Has Not Been Updated & Inserted");
-                    return new JsonResult("Data Has Not Been Updated & Inserted");
+                    return new JsonResult(UpdateOutput);
                 }
                 else if (UpdateOutput == 1)
                 {
                     _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully ");
-                    return new JsonResult("Data Has Been Updated & Inserted Sucessfully ");
+                    return new JsonResult(UpdateOutput);
                 }
                 else
                 {
                     _logger.LogInformation("NO, Response From Database");
-                    return new JsonResult("NO, Response From Database");
+                    return new JsonResult(UpdateOutput);
                 }
             }
             _logger.LogInformation("Null Data Is Coming");

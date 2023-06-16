@@ -51,6 +51,9 @@ builder.Logging.AddSerilog();
 builder.Services.AddScoped<StockCountDL>();
 builder.Services.AddScoped<StoreRequestCancellationDL>();
 builder.Services.AddScoped<PalletizationDL>();
+builder.Services.AddScoped<EmptyPalletDL>();
+builder.Services.AddScoped<StoreOutDL>();
+builder.Services.AddScoped<MaterialPickingDL>();
 
 //End
 
