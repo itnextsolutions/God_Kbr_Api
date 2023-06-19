@@ -1,5 +1,6 @@
 ﻿using Godrej_Korber_DAL.TataCummins;
 using Godrej_Korber_Shared.Models.TataCummins;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
@@ -39,6 +40,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return Ok(headerValue);
         }
 
+        [Authorize]
         [Route("api/PalletizationController/GetOrder")]
         [HttpGet]
         public JsonResult GetOrder(string gr_no)
@@ -78,10 +80,10 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
         }
 
-
+        [Authorize]
         [Route("api/PalletizationController/UpdateInsert")]
         [HttpPost]
-        public ActionResult UpdateInsert([FromBody] List<PalletizationModel> palletization)
+        public ActionResult UpdateInsert([FromBody] PalletizationModel palletization)
         {
             var header = GetAllHeaders();
 
@@ -93,12 +95,10 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             {
                 _logger.LogInformation("Updating And Inserting Of Palletization Process Has Been Started By this User = " + UserName);
 
-                foreach (PalletizationModel items in palletization)
-                {
-                    items.UserName = UserName;
-                    items.UserID = System.Environment.MachineName;
+                    palletization.UserName = UserName;
+                    palletization.UserID = System.Environment.MachineName;
 
-                    dt = objpalletizationDL.UpdateInsert(items);
+                    dt = objpalletizationDL.UpdateInsert(palletization);
 
                     int UpdateOutput = Convert.ToInt32(dt.Rows[0][0]);
 
@@ -114,11 +114,10 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                     {
                         return new JsonResult("NO, Response From Database");
                     }
-                }
             }
 
             _logger.LogInformation("Null Data Is Coming");
-            return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
+            return new JsonResult(null);
 
         }
 

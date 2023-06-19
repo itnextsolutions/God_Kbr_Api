@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -43,7 +44,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return Ok(headerValue);
         }
 
-
+        [Authorize]
         [Route("api/StoreOut/GetStoreOutData")]
         [HttpGet]
         public JsonResult Get_Store_Out_Data()
@@ -80,6 +81,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
         }
 
+        [Authorize]
         [Route("api/StoreOut/GetPalletDetails_Single_Check")]
         [HttpGet]
         public JsonResult Get_PalletDetails_Data_Single_Check(string parameter)
@@ -122,8 +124,8 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             
          }
 
-
-         [Route("api/StoreOut/GetPalletDetails_Multi_Check")]
+        [Authorize]
+        [Route("api/StoreOut/GetPalletDetails_Multi_Check")]
         [HttpGet]
         public JsonResult Get_PalletDetails_Data_MultiCheck(List<String> parameter)
         {
@@ -190,9 +192,8 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
         //}
 
-
+        [Authorize]
         [Route("api/storeOut/Insert_StockMovt_Update_StockItm")]
-        
         [HttpPost]
         public JsonResult Insert_StockMovt_Update_StockItm_1([FromBody] UpdateList storeOutData)
         {

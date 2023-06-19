@@ -1,10 +1,8 @@
 ﻿using Godrej_Korber_DAL.TataCummins;
 using Godrej_Korber_Shared.Models.TataCummins;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
-using Microsoft.AspNetCore.Http;
-using System.Reflection.Metadata;
-using System.Data.Common;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -48,6 +46,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
 
         // GET: api/<EmptyOutController>
+        [Authorize]
         [Route("api/EmptyPalletOut/GetEmptyPalletOut")]
         [HttpGet]
         public JsonResult GetEmptyPalletOut(int parameter)
@@ -87,6 +86,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return new JsonResult(null);
         }
 
+        [Authorize]
         [Route("api/EmptyPalletOut/GetEmptyPalletOut_1")]
         [HttpGet]
         public JsonResult GetEmptyPalletOut([FromBody] PalletNumber palletNumber)
@@ -128,9 +128,9 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
             return new JsonResult(null);
         }
-    
 
 
+        [Authorize]
         [Route("api/EmptyPalletOut/InsertEmptyPalletData")]
         [HttpPost]
         public ActionResult InsertEmptyPalletData([FromBody] EmptyPallet emptyPalletData)
@@ -172,6 +172,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
            
         }
 
+        [Authorize]
         [Route("api/EmptyPallet/UpdateEmptyPallet")]
         [HttpPost]
         public ActionResult UpdateEmptyPallet([FromBody] List<EmptyPallet> emptyPallet)

@@ -1,5 +1,6 @@
 ﻿using Godrej_Korber_DAL.TataCummins;
 using Godrej_Korber_Shared.Models.TataCummins;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
@@ -39,6 +40,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
         }
 
 
+        [Authorize]
         [Route("api/StockCount/GetStockCount")]
         [HttpGet]
         public JsonResult GetStockCount()
@@ -73,6 +75,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
         }
 
+        [Authorize]
         [Route("api/StockCount/GetPalletDetails")]
         [HttpGet]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -112,6 +115,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
         }
 
+        [Authorize]
         [Route("api/StockCount/GetPalletDetails1")]
         [HttpGet]
         public JsonResult GetPalletDetails1()
@@ -145,6 +149,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return new JsonResult("There Is No Data In Database As Per Your Requirement");
         }
 
+        [Authorize]
         [Route("api/StockCount/UpdateInsert")]
         [HttpPost]
         public ActionResult UpdateInsert([FromBody] List<StockCountModel> stockcount)
@@ -206,6 +211,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
          
         }
 
+        [Authorize]
         [Route("api/StockCount/StockCountByScannedId")]
         [HttpGet]
         public ActionResult StockCountByScannedId(int palletid)
@@ -247,6 +253,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
         }
 
+        [Authorize]
         [Route("api/StockCount/UpdateInsertForConfirmation")]
         [HttpGet]
         public ActionResult UpdateInsertForConfirmation(StockCountModel stockCount)

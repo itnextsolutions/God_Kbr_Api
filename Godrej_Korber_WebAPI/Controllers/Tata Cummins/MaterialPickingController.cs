@@ -1,5 +1,6 @@
 ﻿using Godrej_Korber_DAL.TataCummins;
 using Godrej_Korber_Shared.Models.TataCummins;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Data;
@@ -45,7 +46,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return Ok(headerValue);
         }
 
-
+        [Authorize]
         [Route("api/MaterialPicking/Get_Material_Picking")]
         [HttpGet]
         public ActionResult Get_Material_picking_Data(int pallet_id)
@@ -58,7 +59,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
                 var UserName = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
 
-                _logger.LogInformation("Intialization Of Get_Material_Picking Process Has Been Started By this User = " + UserName);
+                _logger.LogInformation("Intialization Of Get_Material_Picking Process Has Been Started By this User = " + UserName+"Requested PalletID Was ="+pallet_id);
 
                  dtResult = objMaterialPicking.GET_MATERIAL_PICKING_DATA(pallet_id);
 
@@ -105,6 +106,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
         //}
 
+        [Authorize]
         [Route("api/MaterialPicking/UpdateMaterial")]
         [HttpPost]
         public ActionResult Update_Material_Picking_Data([FromBody] List<dynamic> materialData)
@@ -134,11 +136,14 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
                 if (output == 1)
                 {
+                    _logger.LogInformation("UpdateMaterial Has Been Successful By this User = " + UserName);
+
                     return new JsonResult("Success");
                 }
 
                 else
                 {
+                    _logger.LogInformation("UpdateMaterial Has Not Been Successful By this User = " + UserName);
                     return new JsonResult("Failed");
                 }
             }

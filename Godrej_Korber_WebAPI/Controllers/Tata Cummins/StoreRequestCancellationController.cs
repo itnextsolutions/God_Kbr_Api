@@ -1,5 +1,6 @@
 ﻿using Godrej_Korber_DAL.TataCummins;
 using Godrej_Korber_Shared.Models.TataCummins;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
@@ -37,7 +38,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return Ok(headerValue);
         }
 
-
+        [Authorize]
         [Route("api/StoreRequestCancellation/GetStoreOutRequestCancellation")]
         [HttpGet]
         public JsonResult GetStoreOutRequestCancellation()
@@ -71,6 +72,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return new JsonResult("There Is No Data Database As Per Your Requirement");
         }
 
+        [Authorize]
         [Route("api/StoreRequestCancellation/UpdateOrderItem")]
         [HttpPost]
         public IActionResult UpdateOrderItem([FromBody] List<StoreRequestCancellationModel> storeRequestCancellations)
@@ -111,6 +113,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
         }
 
+        [Authorize]
         [Route("api/StoreRequestCancellation/GetStoreInRequestCancelletion")]
         [HttpGet]
         public JsonResult GetRequestINCancelletion()
@@ -147,9 +150,9 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
         //update status from STK to TRM
 
+        [Authorize]
         [Route("api/RequestCancelletion/UpdateRequestCancelletion")]
         [HttpPost]
-
         public ActionResult UpdateRequestCancelletion([FromBody] List<StoreRequestCancellationModel> Requestdata)
         {
             var header = GetAllHeaders();

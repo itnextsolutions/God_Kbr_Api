@@ -1,5 +1,7 @@
 ﻿using Godrej_Korber_DAL;
+using Godrej_Korber_DAL.TataCummins;
 using Godrej_Korber_Shared.Models;
+using Godrej_Korber_WebAPI.Controllers.Tata_Cummins;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +21,34 @@ namespace Godrej_Korber_WebAPI.Controllers
     public class LoginController : ControllerBase
     {
         DataTable dtResult = new DataTable();
-        LoginDL objLogin = new LoginDL();
+       // LoginDL objLogin = new LoginDL();
+
+        private readonly ILogger<LoginController> _logger;
+        private readonly LoginDL objLogin;
+
+        public LoginController(ILogger<LoginController> logger, LoginDL LoginDAL)
+        {
+            _logger = logger;
+            objLogin = LoginDAL;
+        }
+        public ActionResult<Dictionary<string, string>> GetAllHeaders()
+        {
+            Dictionary<string, string> requestHeaders =
+               new Dictionary<string, string>();
+            foreach (var header in Request.Headers)
+            {
+                requestHeaders.Add(header.Key, header.Value);
+            }
+            return requestHeaders;
+        }
+
+
+        public ActionResult<string> GetHeaderData(string headerKey)
+        {
+            Request.Headers.TryGetValue("username", out var headerValue);
+
+            return Ok(headerValue);
+        }
 
         private static IConfiguration _configuration;
 
@@ -33,96 +62,71 @@ namespace Godrej_Korber_WebAPI.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] LoginModel login)
         {
-            //string connString = this.Configuration.GetConnectionString("DefaultConnection");
-            //login.username = "admin";
-            //login.password = "kiran11";
-            //decrypt_pwd(login.password);
-            dtResult = objLogin.GetLoginDetail(login);
+            var header = GetAllHeaders();
 
-            if (dtResult.Rows.Count > 0) {
+            var values = GetHeaderData(Convert.ToString(header));
 
-                List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
-                Dictionary<string, object> childRow;
-                foreach (DataRow row in dtResult.Rows)
-                {
-                    childRow = new Dictionary<string, object>();
-                    foreach (DataColumn col in dtResult.Columns)
-                    {
-                        childRow.Add(col.ColumnName, row[col]);
-                    }
-                    parentRow.Add(childRow);
-                }
+            var UserName = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
 
-                var token = GenerateToken(login.username);
-
-                //var newAccessToken = token;
-                //var newRefreshToken = CreateRefreshToken();
-                //login.RefreshToken = newRefreshToken;
-                //await _configuration.SaveChangesAsync();
-
-                string  User_Group= Convert.ToString(dtResult.Rows[0][0]);
-
-                dtResult = objLogin.Get_User_Role(User_Group);
-                string Role_ID = Convert.ToString(dtResult.Rows[0][0]);
-
-                return Ok(new {
-
-                    Message = "Success",
-                    User = parentRow,
-                    jwtToken =token,
-                    Role= Role_ID
-
-                }); ;
-
-                //return Ok(new TokenApiDto()
-                //{
-                //    AccessToken = newAccessToken,
-                //    RefreshToken = newRefreshToken
-                //});
-
-            }
-            else
+            if(login != null)
             {
-                return new JsonResult("Fail");
+                _logger.LogInformation("Intialization Of Login Process Has Been Started By this User = " + UserName);
+
+                dtResult = objLogin.GetLoginDetail(login);
+
+                if (dtResult.Rows.Count > 0)
+                {
+
+                    List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+                    Dictionary<string, object> childRow;
+                    foreach (DataRow row in dtResult.Rows)
+                    {
+                        childRow = new Dictionary<string, object>();
+                        foreach (DataColumn col in dtResult.Columns)
+                        {
+                            childRow.Add(col.ColumnName, row[col]);
+                        }
+                        parentRow.Add(childRow);
+                    }
+
+                    var token = GenerateToken(login.username);
+
+                    string User_Group = Convert.ToString(dtResult.Rows[0][0]);
+
+                    dtResult = objLogin.Get_User_Role(User_Group);
+
+                    string Role_ID = Convert.ToString(dtResult.Rows[0][0]);
+
+                    _logger.LogInformation("Role Group = " + Role_ID);
+
+                    _logger.LogInformation("Logged In Successfully!!" + UserName);
+
+                    return Ok(new
+                    {
+
+                        Message = "Success",
+                        User = parentRow,
+                        jwtToken = token,
+                        Role = Role_ID
+
+                    });
+
+                }
+                else
+                {
+                    _logger.LogInformation("Logged In Failed!!" );
+                    return new JsonResult("Fail");
+                }
             }
-
-            //List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
-            //Dictionary<string, object> childRow;
-            //foreach (DataRow row in dtResult.Rows)
-            //{
-            //    childRow = new Dictionary<string, object>();
-            //    foreach (DataColumn col in dtResult.Columns)
-            //    {
-            //        childRow.Add(col.ColumnName, row[col]);
-            //    }
-            //    parentRow.Add(childRow);
-            //}
-            //return new JsonResult(parentRow);
-
-            //if (dtResult.Rows.Count != 0)
-            //{
-            //    //dtResult = objLogin.Login(login.username, login.password);
-
-            //    if (dtResult.Rows.Count != 0)
-            //    {
-            //        return new JsonResult("Success");
-            //    }
-
-            //    return new JsonResult("Invalid Password");
-            //}
-
-            //return new JsonResult("Invalid UserName & Password");
+            _logger.LogInformation("UserName Not Found");
+            return new JsonResult(null);
         }
-
-
-
 
         private string GenerateToken(string username)
         {
-
             var tokenhandler = new JwtSecurityTokenHandler();
-            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("thisisveryveryimportantkey"));
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("jwt:key")));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("zxcvbnmlkjhgfdsa"));
+            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("jwt:key")));
             var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
@@ -198,24 +202,24 @@ namespace Godrej_Korber_WebAPI.Controllers
             return sResult;
         }
 
-        [HttpGet]
-        [Route("api/Users")]
-        public ActionResult GetAllUsers()
-        {
-            dtResult = objLogin.GetUsers();
-            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
-            Dictionary<string, object> childRow;
-            foreach (DataRow row in dtResult.Rows)
-            {
-                childRow = new Dictionary<string, object>();
-                foreach (DataColumn col in dtResult.Columns)
-                {
-                    childRow.Add(col.ColumnName, row[col]);
-                }
-                parentRow.Add(childRow);
-            }
-            return new JsonResult(parentRow);
-        }
+        //[HttpGet]
+        //[Route("api/Users")]
+        //public ActionResult GetAllUsers()
+        //{
+        //    dtResult = objLogin.GetUsers();
+        //    List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+        //    Dictionary<string, object> childRow;
+        //    foreach (DataRow row in dtResult.Rows)
+        //    {
+        //        childRow = new Dictionary<string, object>();
+        //        foreach (DataColumn col in dtResult.Columns)
+        //        {
+        //            childRow.Add(col.ColumnName, row[col]);
+        //        }
+        //        parentRow.Add(childRow);
+        //    }
+        //    return new JsonResult(parentRow);
+        //}
 
     }
 }

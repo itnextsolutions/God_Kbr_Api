@@ -30,7 +30,7 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[0].ParameterName = "OCUR";
                 param[0].Direction = ParameterDirection.Output;
 
-                dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "ORDERVIEW.GET_STORE_OUT_DATA", param);
+                dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STORE_OUT.GET_STORE_OUT_DATA", param);
                 return dtResult;
             }
             catch (Exception ex)

@@ -54,6 +54,7 @@ builder.Services.AddScoped<PalletizationDL>();
 builder.Services.AddScoped<EmptyPalletDL>();
 builder.Services.AddScoped<StoreOutDL>();
 builder.Services.AddScoped<MaterialPickingDL>();
+builder.Services.AddScoped<LoginDL>();
 
 //End
 
@@ -72,7 +73,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidIssuer = ValidIssuer,
         ValidAudience = ValidAudience,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Key))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("zxcvbnmlkjhgfdsa"))
 
 
     };
