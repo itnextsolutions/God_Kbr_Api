@@ -88,7 +88,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
         [Authorize]
         [Route("api/EmptyPalletOut/GetEmptyPalletOut_1")]
-        [HttpGet]
+        [HttpPost]
         public JsonResult GetEmptyPalletOut([FromBody] PalletNumber palletNumber)
         {
             var header = GetAllHeaders();

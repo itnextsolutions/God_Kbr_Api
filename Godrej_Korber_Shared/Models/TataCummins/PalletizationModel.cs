@@ -19,11 +19,19 @@ namespace Godrej_Korber_Shared.Models.TataCummins
 
         public string ORD_INSPECT_NR { get; set; }
 
+
+       public string ORD_REC_NR { get; set; }
+
+       
         public string ORD_HU_BAR_COD { get; set; }
 
         public string UserName { get; set; }
 
         public string UserID { get; set; }
+
+        public int ORD_HU_ID { get; set; }
+
+        public double ORD_RSV_QTY { get; set; }
 
     }
 }

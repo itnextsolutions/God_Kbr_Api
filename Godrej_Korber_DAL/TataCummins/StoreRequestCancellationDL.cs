@@ -34,14 +34,21 @@ namespace Godrej_Korber_DAL.TataCummins
                
                 if (dtResult != null)
                 {
-                    _logger.LogInformation("Retrived The Data Successfully By This User = " + Username);
+                    _logger.LogInformation("Retrived The Data Successfully By This User = " + Username + "By These Procedure = SP_GET_STORE_OUT_REQUEST_CANCELLATION");
+
+                    return dtResult;
+                }
+                else
+                {
+                    _logger.LogInformation("Data Has Not Been Retrived By This User = " + Username + "By These Procedure = SP_GET_STORE_OUT_REQUEST_CANCELLATION");
+
+                    return dtResult;
                 }
 
-                return dtResult;
             }
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs By These Procedure = SP_GET_STORE_OUT_REQUEST_CANCELLATION " + ex);
                 return dtResult;
             }
         }
@@ -68,23 +75,23 @@ namespace Godrej_Korber_DAL.TataCummins
                 int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
                 if (UpdateOutput == 0)
                 {
-                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + Username+ " Which Is ORD_ID ="+ items.ORD_ID);
+                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + Username+ " Which Is ORD_ID = "+ items.ORD_ID + "By These Procedure = SP_UPDATE_IN_ORDER_ITEM");
                     return dtResult;
                 }
                 else if (UpdateOutput == 1)
                 {
-                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + Username+ " Which Is ORD_ID ="+ items.ORD_ID);
+                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + Username+ " Which Is ORD_ID = "+ items.ORD_ID + " By These Procedure = SP_UPDATE_IN_ORDER_ITEM");
                     return dtResult;
                 }
                 else
                 {
-                    _logger.LogInformation("NO, Response From Database");
+                    _logger.LogInformation("NO, Response From Database By These Procedure = SP_UPDATE_IN_ORDER_ITEM");
                     return dtResult;
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs By These Procedure = SP_UPDATE_IN_ORDER_ITEM " + ex);
                 return dtResult;
             }
 
@@ -103,16 +110,23 @@ namespace Godrej_Korber_DAL.TataCummins
                 
                 dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "STORE_REQUEST_CANCELLATION.SP_TATACUMMINSREQUESTINCANCELLETION", param);
 
-                if (dtResult != null)
+                if (dtResult.Rows.Count > 0)
                 {
-                    _logger.LogInformation("Retrived The Data Successfully By This User = " + Username);
+                    _logger.LogInformation("Retrived The Data Successfully By This User = " + Username + "By These Procedure = SP_TATACUMMINSREQUESTINCANCELLETION");
+
+                    return dtResult;
+                }
+                else
+                {
+                    _logger.LogInformation("Data Has Not been By This User = " + Username + "By These Procedure = SP_TATACUMMINSREQUESTINCANCELLETION");
+
+                    return dtResult;
                 }
 
-                return dtResult;
             }
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs By These Procedure = SP_TATACUMMINSREQUESTINCANCELLETION" + ex);
                 return dtResult;
             }
 
@@ -140,23 +154,23 @@ namespace Godrej_Korber_DAL.TataCummins
                 int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
                 if (UpdateOutput == 0)
                 {
-                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + Username + " Which Is HU_ID =" + data.HU_ID);
+                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + Username + " Which Is HU_ID =" + data.HU_ID + "By These Procedure = SP_UPDATE_IN_HUNIT");
                     return dtResult;
                 }
                 else if (UpdateOutput == 1)
                 {
-                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + Username + " Which Is HU_ID =" + data.HU_ID);
+                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + Username + " Which Is HU_ID =" + data.HU_ID + "By These Procedure = SP_UPDATE_IN_HUNIT");
                     return dtResult;
                 }
                 else
                 {
-                    _logger.LogInformation("NO, Response From Database");
+                    _logger.LogInformation("NO, Response From Database By These Procedure = SP_UPDATE_IN_HUNIT");
                     return dtResult;
                 }
             }
             catch(Exception ex) 
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs By These Procedure = SP_UPDATE_IN_HUNIT" + ex);
                 return dtResult;
             }
            

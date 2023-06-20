@@ -34,17 +34,24 @@ namespace Godrej_Korber_DAL.TataCummins
                 dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STOCK_COUNT.SP_GET_PARTNO_GRNO_DATA", param);
                 objOracleHelper.CloseConnection();
 
-                if (dtResult != null)
+                if (dtResult.Rows.Count > 0)
                 {
-                    _logger.LogInformation("Retrived The Data Successfully By This User = "+ headerValues);
+                    _logger.LogInformation("Retrived The Data Successfully By This User = "+ headerValues+ "By These Procedure = SP_GET_PARTNO_GRNO_DATA");
+
+                    return dtResult;
+                }
+                else
+                {
+                    _logger.LogInformation("Not Retrived Data By This User = " + headerValues + "By These Procedure = SP_GET_PARTNO_GRNO_DATA");
+
+                    return dtResult;
                 }
                 
-                return dtResult;
             }
 
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs By These Procedure = SP_GET_PARTNO_GRNO_DATA " + ex);
                 return dtResult;
             }
 
@@ -77,16 +84,21 @@ namespace Godrej_Korber_DAL.TataCummins
 
                 dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STOCK_COUNT.SP_GET_STOCK_COUNT_PALLET_DETAILS", param);
                 objOracleHelper.CloseConnection();
-                if(dtResult != null)
+                if(dtResult.Rows.Count > 0)
                 {
-                    _logger.LogInformation("Retrived The Data Successfully By This User = " + headerValues);
+                    _logger.LogInformation("Retrived The Data Successfully By This User = " + headerValues + "By These Procedure = SP_GET_STOCK_COUNT_PALLET_DETAILS");
+                    return dtResult;
                 }
-                return dtResult;
+                else
+                {
+                    _logger.LogInformation("Not Retrived Data  By This User = " + headerValues + "By These Procedure = SP_GET_STOCK_COUNT_PALLET_DETAILS");
+                    return dtResult;
+                }
             }
 
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs By These Procedure = SP_GET_STOCK_COUNT_PALLET_DETAILS" + ex);
                 return dtResult;
             }
 
@@ -107,16 +119,23 @@ namespace Godrej_Korber_DAL.TataCummins
                 dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STOCK_COUNT.SP_GETDETAILS1", param);
                 objOracleHelper.CloseConnection();
 
-                if (dtResult != null)
+                if (dtResult.Rows.Count > 0)
                 {
-                    _logger.LogInformation("Retrived The Data Successfully By This User = " + headerValues);
+                    _logger.LogInformation("Retrived The Data Successfully By This User = " + headerValues + "By These Procedure = SP_GETDETAILS1");
+                    return dtResult;
                 }
-                return dtResult;
+                else
+                {
+                    _logger.LogInformation("Not Retrived Data By This User = " + headerValues + "By These Procedure = SP_GETDETAILS1");
+
+                    return dtResult;
+                }
+                
             }
 
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs By These Procedure = SP_GETDETAILS1 " + ex);
                 return dtResult;
             }
         }
@@ -140,11 +159,22 @@ namespace Godrej_Korber_DAL.TataCummins
 
                 dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STOCK_COUNT.SP_GET_VALID_COUNT_FOR_FURTHER_PROCESS", param);
                 objOracleHelper.CloseConnection();
-                return dtResult;
+                if(dtResult.Rows.Count > 0)
+                {
+                    _logger.LogInformation("Retrived Data Successfully!! By These Procedure = SP_GET_VALID_COUNT_FOR_FURTHER_PROCESS");
+
+                    return dtResult;
+                }
+                else
+                {
+                    _logger.LogInformation("Not Retrived Data By These Procedure = SP_GET_VALID_COUNT_FOR_FURTHER_PROCESS");
+
+                    return dtResult;
+                }
             }
             catch(Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs By These Procedure = SP_GET_VALID_COUNT_FOR_FURTHER_PROCESS " + ex);
                 return dtResult;
             }
             
@@ -169,11 +199,23 @@ namespace Godrej_Korber_DAL.TataCummins
 
                 dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STOCK_COUNT.SP_GET_HUPAR3", param);
                 objOracleHelper.CloseConnection();
-                return dtResult;
+                string hupar3 = Convert.ToString(dtResult.Rows[0][0]);
+                if (dtResult.Rows.Count > 0)
+                {
+                    _logger.LogInformation("Retrived Data Successfully!! By These Procedure = SP_GET_HUPAR3 Where hupar3 =" + hupar3);
+
+                    return dtResult;
+                }
+                else
+                {
+                    _logger.LogInformation("Not Retrived Data By These Procedure = SP_GET_HUPAR3 Where hupar3 =" + hupar3);
+
+                    return dtResult;
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs By These Procedure = SP_GET_HUPAR3 " + ex);
                 return dtResult;
             }
            
@@ -181,7 +223,6 @@ namespace Godrej_Korber_DAL.TataCummins
 
         public DataTable UpdateInHunit(StockCountModel items, int hupar3)
         {
-            
 
                 OracleParameter[] param = new OracleParameter[3];
 
@@ -306,18 +347,18 @@ namespace Godrej_Korber_DAL.TataCummins
                 int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
                 if (UpdateOutput == 0)
                 {
-                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + items.USERNAME + " Where STK_PRD_COD =" + items.STK_PRD_COD +"And HU_ID ="+ items.HU_ID);
+                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + items.USERNAME + " Where STK_PRD_COD =" + items.STK_PRD_COD +"And HU_ID ="+ items.HU_ID+ "By These Procedure = SP_UPDATE_AND_INSERT");
                     return dtResult;
                 }
                 else if (UpdateOutput == 1)
                 {
-                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + items.USERNAME + "  Where STK_PRD_COD =" + items.STK_PRD_COD + "And HU_ID =" + items.HU_ID);
+                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + items.USERNAME + "  Where STK_PRD_COD =" + items.STK_PRD_COD + "And HU_ID =" + items.HU_ID + "By These Procedure = SP_UPDATE_AND_INSERT");
                     return dtResult;
                     return dtResult;
                 }
                 else
                 {
-                    _logger.LogInformation("NO, Response From Database");
+                    _logger.LogInformation("NO, Response From Database By These Procedure = SP_UPDATE_AND_INSERT");
                     return dtResult;
                 }
 
@@ -351,11 +392,22 @@ namespace Godrej_Korber_DAL.TataCummins
 
                 dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STOCK_COUNT.SP_STOCK_COUNT_BY_SCANNED_ID", param);
                 objOracleHelper.CloseConnection();
-                return dtResult;
+                if(dtResult.Rows.Count > 0)
+                {
+                    _logger.LogInformation("Retrived Data Successfully!! By These Procedure = SP_STOCK_COUNT_BY_SCANNED_ID Where PalletID =" + PalletId);
+
+                    return dtResult;
+                }
+                else
+                {
+                    _logger.LogInformation("Data not Retrived!! By These Procedure = SP_STOCK_COUNT_BY_SCANNED_ID Where PalletID =" + PalletId);
+
+                    return dtResult;
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs By These Procedure = SP_STOCK_COUNT_BY_SCANNED_ID" + ex);
                 return dtResult;
             }
             
@@ -386,7 +438,7 @@ namespace Godrej_Korber_DAL.TataCummins
 
                 param[3] = new OracleParameter();
                 param[3].ParameterName = "P_STK_PRD_COD";
-                param[3].OracleDbType = OracleDbType.Int32;
+                param[3].OracleDbType = OracleDbType.Varchar2;
                 param[3].Value = stockmodel.STK_PRD_COD;
                 param[3].Direction = ParameterDirection.Input;
 
@@ -408,24 +460,24 @@ namespace Godrej_Korber_DAL.TataCummins
                 int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
                 if (UpdateOutput == 0)
                 {
-                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + stockmodel.USERNAME + " Where STK_PRD_COD =" + stockmodel.STK_PRD_COD + "And HU_ID =" + stockmodel.HU_ID);
+                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + stockmodel.USERNAME + " Where STK_PRD_COD =" + stockmodel.STK_PRD_COD + "And HU_ID =" + stockmodel.HU_ID + "BY These Procedure = SP_UPDATE_INSERT_FOR_CONFIRMATION");
                     return dtResult;
                 }
                 else if (UpdateOutput == 1)
                 {
-                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + stockmodel.USERNAME + "  Where STK_PRD_COD =" + stockmodel.STK_PRD_COD + "And HU_ID =" + stockmodel.HU_ID);
+                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + stockmodel.USERNAME + "  Where STK_PRD_COD =" + stockmodel.STK_PRD_COD + "And HU_ID =" + stockmodel.HU_ID + "BY These Procedure = SP_UPDATE_INSERT_FOR_CONFIRMATION");
                     return dtResult;
                 }
                 else
                 {
-                    _logger.LogInformation("NO, Response From Database");
+                    _logger.LogInformation("NO, Response From Database BY These Procedure = SP_UPDATE_INSERT_FOR_CONFIRMATION");
                     return dtResult;
                 }
 
             }
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs BY These Procedure = SP_UPDATE_INSERT_FOR_CONFIRMATION " + ex);
                 return dtResult;
             }
             

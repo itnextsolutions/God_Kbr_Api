@@ -42,9 +42,14 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[1].Direction = ParameterDirection.Input;
 
                 dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "MATERIAL_PICKING.GET_MATERIAL_PICKING_DATA", param);
-                if(dtResult != null)
+                if(dtResult.Rows.Count > 0)
                 {
-                    _logger.LogInformation("Retrived The Data Successfully Where PalletID = "+ PALLET_ID);
+                    _logger.LogInformation("Retrived The Data Successfully Where PalletID = "+ PALLET_ID + "By These Procedure = GET_MATERIAL_PICKING_DATA");
+                    return dtResult;
+                }
+                else
+                {
+                    _logger.LogInformation("Data Not Retrived Where PalletID = " + PALLET_ID + "By These Procedure = GET_MATERIAL_PICKING_DATA");
                     return dtResult;
                 }
                 return dtResult;
@@ -60,14 +65,12 @@ namespace Godrej_Korber_DAL.TataCummins
         public DataTable UPDATE_MATERIAL_PICKING_DATA(MaterialPickingModel materialData)
         {
 
-
             OracleParameter[] param = new OracleParameter[3];
 
             param[0] = new OracleParameter();
             param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
-
 
             param[1] = new OracleParameter();
             param[1].OracleDbType = OracleDbType.Int32;
@@ -104,12 +107,10 @@ namespace Godrej_Korber_DAL.TataCummins
 
             OracleParameter[] param = new OracleParameter[9];
 
-
             param[0] = new OracleParameter();
             param[0].OracleDbType = OracleDbType.RefCursor;
             param[0].ParameterName = "OCUR";
             param[0].Direction = ParameterDirection.Output;
-
 
             param[1] = new OracleParameter();
             param[1].OracleDbType = OracleDbType.Int32;
@@ -147,7 +148,6 @@ namespace Godrej_Korber_DAL.TataCummins
             param[6].Value = materialData.STK_ORD_ITM.Value;
             param[6].Direction = ParameterDirection.Input;
 
-
             param[7] = new OracleParameter();
             param[7].OracleDbType = OracleDbType.Varchar2;
             param[7].ParameterName = "MSG_CRE_USER";
@@ -165,17 +165,17 @@ namespace Godrej_Korber_DAL.TataCummins
             int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
             if (UpdateOutput == 0)
             {
-                _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + MSG_CRE_USER );
+                _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + MSG_CRE_USER + "BY these Procedure = UPDATE_INSERT_MATERIAL_PICKING");
                 return dtResult;
             }
             else if (UpdateOutput == 1)
             {
-                _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + MSG_CRE_USER);
+                _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + MSG_CRE_USER + "BY these Procedure = UPDATE_INSERT_MATERIAL_PICKING");
                 return dtResult;
             }
             else
             {
-                _logger.LogInformation("NO, Response From Database");
+                _logger.LogInformation("NO, Response From Database BY these Procedure = UPDATE_INSERT_MATERIAL_PICKING");
                 return dtResult;
             }
         }

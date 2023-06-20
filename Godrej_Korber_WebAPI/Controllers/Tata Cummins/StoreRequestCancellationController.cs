@@ -53,7 +53,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
             dt = ObjGetStoreOutRequestCancellation.GetStoreOutRequestCancellation(Username);
 
-            if (dt != null)
+            if (dt.Rows.Count > 0)
             {
                 List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
                 Dictionary<string, object> childRow;
@@ -69,7 +69,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 return new JsonResult(parentRow);
             }
             _logger.LogInformation("There Is No Data Database As Per Your Requirement,Count Was Null");
-            return new JsonResult("There Is No Data Database As Per Your Requirement");
+            return new JsonResult(null);
         }
 
         [Authorize]

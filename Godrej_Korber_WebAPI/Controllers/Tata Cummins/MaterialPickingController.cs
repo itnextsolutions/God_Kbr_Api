@@ -61,9 +61,9 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
                 _logger.LogInformation("Intialization Of Get_Material_Picking Process Has Been Started By this User = " + UserName+"Requested PalletID Was ="+pallet_id);
 
-                 dtResult = objMaterialPicking.GET_MATERIAL_PICKING_DATA(pallet_id);
+                dtResult = objMaterialPicking.GET_MATERIAL_PICKING_DATA(pallet_id);
 
-                if(pallet_id != null)
+                if(dtResult.Rows.Count > 0)
                 {
                     foreach (DataRow row in dtResult.Rows)
                     {

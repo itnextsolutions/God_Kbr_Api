@@ -31,7 +31,18 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[0].Direction = ParameterDirection.Output;
 
                 dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STORE_OUT.GET_STORE_OUT_DATA", param);
-                return dtResult;
+                if (dtResult.Rows.Count > 0)
+                {
+                    _logger.LogInformation("Retrived The Data Successfully By These Procedure = GET_STORE_OUT_DATA");
+
+                    return dtResult;
+                }
+                else
+                {
+                    _logger.LogInformation("Not Retrived Data By These Procedure = GET_STORE_OUT_DATA");
+
+                    return dtResult;
+                }
             }
             catch (Exception ex)
             {
@@ -63,14 +74,18 @@ namespace Godrej_Korber_DAL.TataCummins
 
                 if (dtResult.Rows.Count > 0)
                 {
-                    _logger.LogInformation("Data Has Been Retrived Successfully Requested PRD_COD Was = " + partNo);
+                    _logger.LogInformation("Data Has Been Retrived Successfully Requested PRD_COD Was = " + partNo + " BY These Procedure = GET_STORE_OUT_PALLET_DETAILS ");
                     return dtResult;
                 }
-                return dtResult;
+                else
+                {
+                    _logger.LogInformation("Data Has not Been Retrived!! Requested PRD_COD Was = " + partNo + " BY These Procedure = GET_STORE_OUT_PALLET_DETAILS ");
+                    return dtResult;
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs  BY These Procedure = GET_STORE_OUT_PALLET_DETAILS " + ex);
                 return dtResult;
             }
         }
@@ -121,23 +136,23 @@ namespace Godrej_Korber_DAL.TataCummins
                 int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
                 if (UpdateOutput == 0)
                 {
-                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + data.EXE_USER + " Where ORD_ID =" + data.ORD_ID + "And RSV_QTY =" + data.RSV_QTY + " And ORD_PARTIAL " + data.ORD_PARTIAL);
+                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + data.EXE_USER + " Where ORD_ID =" + data.ORD_ID + "And RSV_QTY =" + data.RSV_QTY + " And ORD_PARTIAL " + data.ORD_PARTIAL + "By These Procedure = UPDATE_ORDERITM");
                     return dtResult;
                 }
                 else if (UpdateOutput == 1)
                 {
-                    _logger.LogInformation("Data Has Been Updated & Inserted By These User =" + data.EXE_USER + " Where ORD_ID =" + data.ORD_ID + "And RSV_QTY =" + data.RSV_QTY + " And ORD_PARTIAL " + data.ORD_PARTIAL);
+                    _logger.LogInformation("Data Has Been Updated & Inserted By These User =" + data.EXE_USER + " Where ORD_ID =" + data.ORD_ID + "And RSV_QTY =" + data.RSV_QTY + " And ORD_PARTIAL " + data.ORD_PARTIAL + "By These Procedure = UPDATE_ORDERITM");
                     return dtResult;
                 }
                 else
                 {
-                    _logger.LogInformation("NO, Response From Database");
+                    _logger.LogInformation("NO, Response From Database By These Procedure = UPDATE_ORDERITM");
                     return dtResult;
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs By These Procedure = UPDATE_ORDERITM " + ex);
                 return dtResult;
             }
         }
@@ -258,23 +273,23 @@ namespace Godrej_Korber_DAL.TataCummins
                 int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
                 if (UpdateOutput == 0)
                 {
-                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + modelStoreOut.EXE_USER + " Where STK_PRD_COD =" + modelStoreOut.STK_PRD_COD + "And RSV_QTY =" + modelStoreOut.STK_PRD_QTY + " And PARTIAL " + modelStoreOut.PARTIAL);
+                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + modelStoreOut.EXE_USER + " Where STK_PRD_COD =" + modelStoreOut.STK_PRD_COD + "And RSV_QTY =" + modelStoreOut.STK_PRD_QTY + " And PARTIAL " + modelStoreOut.PARTIAL + "By These Procedure = Insert_and_update_storeOutData");
                     return dtResult;
                 }
                 else if (UpdateOutput == 1)
                 {
-                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + modelStoreOut.EXE_USER + " Where STK_PRD_COD =" + modelStoreOut.STK_PRD_COD + "And RSV_QTY =" + modelStoreOut.STK_PRD_QTY + " And PARTIAL " + modelStoreOut.PARTIAL);
+                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + modelStoreOut.EXE_USER + " Where STK_PRD_COD =" + modelStoreOut.STK_PRD_COD + "And RSV_QTY =" + modelStoreOut.STK_PRD_QTY + " And PARTIAL " + modelStoreOut.PARTIAL + "By These Procedure = Insert_and_update_storeOutData");
                     return dtResult;
                 }
                 else
                 {
-                    _logger.LogInformation("NO, Response From Database");
+                    _logger.LogInformation("NO, Response From Database By These Procedure = Insert_and_update_storeOutData");
                     return dtResult;
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception Occurs " + ex);
+                _logger.LogWarning("Exception Occurs By These Procedure = Insert_and_update_storeOutData " + ex);
                 return dtResult;
             }
         }

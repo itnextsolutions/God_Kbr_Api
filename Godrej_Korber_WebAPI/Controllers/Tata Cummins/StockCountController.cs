@@ -71,7 +71,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 return new JsonResult(parentRow);
             }
             _logger.LogInformation("There Is No Data Database As Per Your Requirement,Count Was Null");
-            return new JsonResult("There Is No Data Database As Per Your Requirement");
+            return new JsonResult(null);
 
         }
 
@@ -111,7 +111,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 return new JsonResult(null);
             }
             _logger.LogInformation("Null Data Is Coming");
-            return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
+            return new JsonResult(null);
 
         }
 
@@ -146,7 +146,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 return new JsonResult(parentRow);
             }
             _logger.LogInformation("There Is No Data In Database As Per Your Requirement,Count Was Null");
-            return new JsonResult("There Is No Data In Database As Per Your Requirement");
+            return new JsonResult(null);
         }
 
         [Authorize]
@@ -159,7 +159,6 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             var values = GetHeaderData(Convert.ToString(header));
 
             var headerValues = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
-
 
             if (stockcount != null)
             {
@@ -207,7 +206,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             }
 
             _logger.LogInformation("Null Data Is Coming");
-            return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
+            return new JsonResult(null);
          
         }
 
@@ -228,7 +227,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
                 dt = objStockCount.StockCountByScannedId(palletid);
 
-                if (dt != null)
+                if (dt.Rows.Count > 0)
                 {
                     List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
                     Dictionary<string, object> childRow;
@@ -245,7 +244,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 }
 
                 _logger.LogInformation("This PalleId = " + palletid + "Has Not Data");
-                return new JsonResult("This PalleId = " + palletid + "Has Not Data");
+                return new JsonResult(null);
             }
 
             _logger.LogInformation("Null Data Is Coming");
@@ -292,7 +291,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 }
             }
             _logger.LogInformation("Null Data Is Coming");
-            return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
+            return new JsonResult(null);
 
         }
 

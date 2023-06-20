@@ -45,6 +45,16 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[1].Direction = ParameterDirection.Output;
 
                 dt = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_EMPTY_PALLET.GET_EMPTY_PALLET_DATA", param);
+                if(dt.Rows.Count > 0)
+                {
+                    _logger.LogInformation("Data Retrived Succesfully!!! By These Procedure = GET_EMPTY_PALLET_DATA");
+                    return dt;
+                }
+                else
+                {
+                    _logger.LogError("Data Not Retrived!!! By These Procedure = GET_EMPTY_PALLET_DATA");
+                    return dt;
+                }
                 return dt;
             }
             catch (Exception ex)
@@ -133,17 +143,17 @@ namespace Godrej_Korber_DAL.TataCummins
                 int UpdateOutput = Convert.ToInt32(dt.Rows[0][0]);
                 if (UpdateOutput == 0)
                 {
-                    _logger.LogInformation("Data Has Not Been  Inserted By These User =" + emptypalletModel.HU_CRE_USER + " Where HU_ID =" + emptypalletModel.HU_ID + "And HU_VOl =" + emptypalletModel.HU_VOL);
+                    _logger.LogInformation("Data Has Not Been  Inserted By These User =" + emptypalletModel.HU_CRE_USER + " Where HU_ID =" + emptypalletModel.HU_ID + "And HU_VOl =" + emptypalletModel.HU_VOL + "By These Procedure = INSERT_INTO_HUNIT1");
                     return dt;
                 }
                 else if (UpdateOutput == 1)
                 {
-                    _logger.LogInformation("Data Has Been  Inserted Sucessfully By These User =" + emptypalletModel.HU_CRE_USER + "  Where HU_ID =" + emptypalletModel.HU_ID + "And HU_VOL =" + emptypalletModel.HU_VOL);
+                    _logger.LogInformation("Data Has Been  Inserted Sucessfully By These User =" + emptypalletModel.HU_CRE_USER + "  Where HU_ID =" + emptypalletModel.HU_ID + "And HU_VOL =" + emptypalletModel.HU_VOL + "By These Procedure = INSERT_INTO_HUNIT1");
                     return dt;;
                 }
                 else
                 {
-                    _logger.LogInformation("NO, Response From Database");
+                    _logger.LogInformation("NO, Response From Database By These Procedure = INSERT_INTO_HUNIT1");
                     return dt;
                 }
 
