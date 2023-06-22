@@ -76,7 +76,7 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[1].Direction = ParameterDirection.Input;
 
                 param[2] = new OracleParameter(); 
-                param[2].ParameterName = "P_STK_REC_POS";
+                param[2].ParameterName = "P_STK_REC_NR";
                 param[2].OracleDbType = OracleDbType.Varchar2;
                 param[2].Value = grno;
                 param[2].Direction = ParameterDirection.Input;
@@ -86,12 +86,12 @@ namespace Godrej_Korber_DAL.TataCummins
                 objOracleHelper.CloseConnection();
                 if(dtResult.Rows.Count > 0)
                 {
-                    _logger.LogInformation("Retrived The Data Successfully By This User = " + headerValues + "By These Procedure = SP_GET_STOCK_COUNT_PALLET_DETAILS");
+                    _logger.LogInformation("Retrived The Data Successfully By This User = " + headerValues + "By These Procedure = SP_GET_STOCK_COUNT_PALLET_DETAILS Where GR_NO = " + grno+ "And Part_NO = "+partno);
                     return dtResult;
                 }
                 else
                 {
-                    _logger.LogInformation("Not Retrived Data  By This User = " + headerValues + "By These Procedure = SP_GET_STOCK_COUNT_PALLET_DETAILS");
+                    _logger.LogInformation("Not Retrived Data  By This User = " + headerValues + "By These Procedure = SP_GET_STOCK_COUNT_PALLET_DETAILS Where GR_NO = " + grno+ "And Part_NO = "+partno);
                     return dtResult;
                 }
             }
@@ -161,13 +161,13 @@ namespace Godrej_Korber_DAL.TataCummins
                 objOracleHelper.CloseConnection();
                 if(dtResult.Rows.Count > 0)
                 {
-                    _logger.LogInformation("Retrived Data Successfully!! By These Procedure = SP_GET_VALID_COUNT_FOR_FURTHER_PROCESS");
+                    _logger.LogInformation("Retrived Data Successfully!! By These Procedure = SP_GET_VALID_COUNT_FOR_FURTHER_PROCESS Where STK_PRD_COD Was = " +stockcount.STK_PRD_COD);
 
                     return dtResult;
                 }
                 else
                 {
-                    _logger.LogInformation("Not Retrived Data By These Procedure = SP_GET_VALID_COUNT_FOR_FURTHER_PROCESS");
+                    _logger.LogInformation("Not Retrived Data By These Procedure = SP_GET_VALID_COUNT_FOR_FURTHER_PROCESS Where STK_PRD_COD Was = " +stockcount.STK_PRD_COD);
 
                     return dtResult;
                 }

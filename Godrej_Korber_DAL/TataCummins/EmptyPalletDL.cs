@@ -45,17 +45,19 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[1].Direction = ParameterDirection.Output;
 
                 dt = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_EMPTY_PALLET.GET_EMPTY_PALLET_DATA", param);
+                int rowcount=dt.Rows.Count;
                 if(dt.Rows.Count > 0)
                 {
-                    _logger.LogInformation("Data Retrived Succesfully!!! By These Procedure = GET_EMPTY_PALLET_DATA");
+                    _logger.LogInformation("Data Retrived Succesfully!!!  By These Procedure = GET_EMPTY_PALLET_DATA Where PalletNumber Was = " +palletnumber);
+                    _logger.LogInformation("The Rows You Got = " +rowcount);
                     return dt;
                 }
                 else
                 {
                     _logger.LogError("Data Not Retrived!!! By These Procedure = GET_EMPTY_PALLET_DATA");
+                    _logger.LogInformation("The Rows You Got = " + rowcount);
                     return dt;
                 }
-                return dt;
             }
             catch (Exception ex)
             {

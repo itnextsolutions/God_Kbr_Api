@@ -43,7 +43,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
         [Authorize]
         [Route("api/PalletizationController/GetOrder")]
         [HttpGet]
-        public JsonResult GetOrder(string gr_no)
+        public JsonResult GetOrder(string gr_no, string part_no)
         {
             var header = GetAllHeaders();
 
@@ -51,11 +51,11 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
             var UserName = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
 
-            if (gr_no != null) 
+            if (gr_no != null || part_no != null) 
             {
                 _logger.LogInformation("Intialization Of Palletization Process Has Been Started By this User = " + UserName + " And The Requested Gr_No Was = "+gr_no );
 
-                dt = objpalletizationDL.GetEmptyPalletOut(gr_no);
+                dt = objpalletizationDL.GetEmptyPalletOut(gr_no,part_no);
 
                 if (dt.Rows.Count > 0)
                 {
@@ -102,18 +102,20 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
                     int UpdateOutput = Convert.ToInt32(dt.Rows[0][0]);
 
-                    if (UpdateOutput == 0)
-                    {
-                        return new JsonResult("Data Has Not Been Updated & Inserted");
-                    }
-                    else if (UpdateOutput == 1)
-                    {
-                        return new JsonResult("Data Has Been Updated & Inserted Sucessfully ");
-                    }
-                    else
-                    {
-                        return new JsonResult("NO, Response From Database");
-                    }
+                    return new JsonResult(UpdateOutput);
+
+                    //if (UpdateOutput == 0)
+                    //{
+                    //    return new JsonResult("Data Has Not Been Updated & Inserted");
+                    //}
+                    //else if (UpdateOutput == 1)
+                    //{
+                    //    return new JsonResult("Data Has Been Updated & Inserted Sucessfully ");
+                    //}
+                    //else
+                    //{
+                    //    return new JsonResult("NO, Response From Database");
+                    //}
             }
 
             _logger.LogInformation("Null Data Is Coming");

@@ -10,7 +10,7 @@ namespace Godrej_Korber_Shared.Models.TataCummins
     {
         public int HU_ID { get; set; }
         public string STK_PRD_COD { get; set; }
-        public string STK_REC_POS { get; set; }
+        public string STK_REC_NR { get; set; }
         public string PRD_DESC { get; set; }
         public double STK_PRD_QTY { get; set; }
         public int LOC_AISL_ID { get; set; }

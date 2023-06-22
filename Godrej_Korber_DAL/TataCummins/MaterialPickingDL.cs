@@ -52,7 +52,6 @@ namespace Godrej_Korber_DAL.TataCummins
                     _logger.LogInformation("Data Not Retrived Where PalletID = " + PALLET_ID + "By These Procedure = GET_MATERIAL_PICKING_DATA");
                     return dtResult;
                 }
-                return dtResult;
             }
             catch (Exception ex)
             {
@@ -165,7 +164,7 @@ namespace Godrej_Korber_DAL.TataCummins
             int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
             if (UpdateOutput == 0)
             {
-                _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + MSG_CRE_USER + "BY these Procedure = UPDATE_INSERT_MATERIAL_PICKING");
+                _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + MSG_CRE_USER + "BY these Procedure = UPDATE_INSERT_MATERIAL_PICKING ");
                 return dtResult;
             }
             else if (UpdateOutput == 1)

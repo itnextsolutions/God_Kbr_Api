@@ -22,7 +22,7 @@ namespace Godrej_Korber_DAL.TataCummins
         }
 
 
-        public DataTable GetEmptyPalletOut(string gr_no)
+        public DataTable GetEmptyPalletOut(string gr_no,string part_no)
         {
             try
             {
@@ -39,16 +39,26 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[1].Value = gr_no;
                 param[1].Direction = ParameterDirection.Input;
 
+                param[2] = new OracleParameter();
+                param[2].ParameterName = "MSG_PART_NO";
+                param[2].OracleDbType = OracleDbType.Varchar2;
+                param[2].Value = part_no;
+                param[2].Direction = ParameterDirection.Input;
+
                 dtResult = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_PALLETISATION.SP_GET_PALLETISATION_DATA", param);
+                int rowcount=dtResult.Rows.Count;
                 if(dtResult.Rows.Count > 0)
                 {
-                    _logger.LogInformation("Data Retrived Sucessfully!!! BY These Procedure = SP_GET_PALLETISATION_DATA ");
+                    _logger.LogInformation("Data Retrived Sucessfully!!! BY These Procedure = SP_GET_PALLETISATION_DATA Where Gr_NO Was = "+gr_no);
+
+                    return dtResult;
                 }
                 else
                 {
-                    _logger.LogInformation("Data Not Found!!! BY These Procedure = SP_GET_PALLETISATION_DATA ");
+                    _logger.LogInformation("Data Not Found!!! BY These Procedure = SP_GET_PALLETISATION_DATA  Where Gr_NO Was = "+gr_no);
+
+                    return dtResult;
                 }
-                return dtResult;
             }
             catch(Exception ex)
             {
@@ -57,12 +67,12 @@ namespace Godrej_Korber_DAL.TataCummins
             }
             
         }
-         
+
         public DataTable UpdateInsert(PalletizationModel Data)
         {
             try
             {
-                OracleParameter[] param = new OracleParameter[12];
+                OracleParameter[] param = new OracleParameter[14];
 
                 param[0] = new OracleParameter();
                 param[0].OracleDbType = OracleDbType.RefCursor;
@@ -93,6 +103,8 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[4].Value = Data.UserID;
                 param[4].Direction = ParameterDirection.Input;
 
+
+
                 param[5] = new OracleParameter();
                 param[5].ParameterName = "MSG_ORD_PRD_COD";
                 param[5].OracleDbType = OracleDbType.Varchar2;
@@ -104,6 +116,7 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[6].OracleDbType = OracleDbType.Int32;
                 param[6].Value = Data.ORD_HU_ID;
                 param[6].Direction = ParameterDirection.Input;
+
 
                 param[7] = new OracleParameter();
                 param[7].ParameterName = "MSG_ORD_INSPECT_NR";
@@ -117,10 +130,12 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[8].Value = Data.ORD_REF_NR;
                 param[8].Direction = ParameterDirection.Input;
 
+
+
                 param[9] = new OracleParameter();
                 param[9].ParameterName = "MSG_SHELF_LIFE";
                 param[9].OracleDbType = OracleDbType.Double;
-                param[9].Value = Data.ORD_RSV_QTY;
+                param[9].Value = Data.SHELF_LIFE;
                 param[9].Direction = ParameterDirection.Input;
 
                 param[10] = new OracleParameter();
@@ -129,11 +144,25 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[10].Value = Data.ORD_REC_NR;
                 param[10].Direction = ParameterDirection.Input;
 
+
                 param[11] = new OracleParameter();
                 param[11].ParameterName = "MSG_ORD_HU_BAR_COD";
                 param[11].OracleDbType = OracleDbType.Varchar2;
                 param[11].Value = Data.ORD_HU_BAR_COD;
                 param[11].Direction = ParameterDirection.Input;
+
+                param[12] = new OracleParameter();
+                param[12].ParameterName = "MSG_PRD_DESC";
+                param[12].OracleDbType = OracleDbType.Varchar2;
+                param[12].Value = Data.PRD_DESC;
+                param[12].Direction = ParameterDirection.Input;
+
+
+                param[13] = new OracleParameter();
+                param[13].ParameterName = "MSG_NOT_USEABLE";
+                param[13].OracleDbType = OracleDbType.Boolean;
+                param[13].Value = Data.NOT_USEABLE;
+                param[13].Direction = ParameterDirection.Input;
 
 
                 dtResult = oracle.ExecuteDataTable(oracle.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_PALLETISATION.SP_UPDATE_INSERT_PALLETIZATION", param);
@@ -141,17 +170,17 @@ namespace Godrej_Korber_DAL.TataCummins
                 int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
                 if (UpdateOutput == 0)
                 {
-                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + Data.UserName + " Where ORD_ID =" + Data.ORD_ID + "By These Procedure = SP_UPDATE_INSERT_PALLETIZATION ");
+                    _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + Data.UserName + " Where ORD_ID =" + Data.ORD_ID);
                     return dtResult;
                 }
                 else if (UpdateOutput == 1)
                 {
-                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + Data.UserName + " Where ORD_ID =" + Data.ORD_ID + "By These Procedure = SP_UPDATE_INSERT_PALLETIZATION ");
+                    _logger.LogInformation("Data Has Been Updated & Inserted Sucessfully By These User =" + Data.UserName + "  Where STK_PRD_COD =");
                     return dtResult;
                 }
                 else
                 {
-                    _logger.LogInformation("NO, Response From Database By These Procedure = SP_UPDATE_INSERT_PALLETIZATION ");
+                    _logger.LogInformation("NO, Response From Database");
                     return dtResult;
                 }
             }
