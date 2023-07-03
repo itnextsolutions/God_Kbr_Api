@@ -81,48 +81,48 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
         }
 
-        [Authorize]
-        [Route("api/StoreOut/GetPalletDetails_Single_Check")]
-        [HttpGet]
-        public JsonResult Get_PalletDetails_Data_Single_Check(string parameter)
-        {
-            var header = GetAllHeaders();
+        //[Authorize]
+        //[Route("api/StoreOut/GetPalletDetails_Single_Check")]
+        //[HttpGet]
+        //public JsonResult Get_PalletDetails_Data_Single_Check(string parameter)
+        //{
+        //    var header = GetAllHeaders();
 
-            var values = GetHeaderData(Convert.ToString(header));
+        //    var values = GetHeaderData(Convert.ToString(header));
 
-            var UserName = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
+        //    var UserName = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
 
-            if(parameter != null)
-            {
-                _logger.LogInformation("Intialization Of GetPalletDetails_Single_Check Process Has Been Started By this User = " + UserName);
+        //    if(parameter != null)
+        //    {
+        //        _logger.LogInformation("Intialization Of GetPalletDetails_Single_Check Process Has Been Started By this User = " + UserName);
 
-                dtResult = objStoreOutDL.Get_PalletDetails_Data(parameter);
+        //        dtResult = objStoreOutDL.Get_PalletDetails_Data(parameter);
                 
-                if (dtResult.Rows.Count > 0) 
-                {
-                    _logger.LogInformation("Retrived The Data Successfully By This User = " + UserName);
+        //        if (dtResult.Rows.Count > 0) 
+        //        {
+        //            _logger.LogInformation("Retrived The Data Successfully By This User = " + UserName);
 
-                    List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
-                    Dictionary<string, object> childRow;
-                    foreach (DataRow row in dtResult.Rows)
-                    {
-                        childRow = new Dictionary<string, object>();
-                        foreach (DataColumn col in dtResult.Columns)
-                        {
-                            childRow.Add(col.ColumnName, row[col]);
-                        }
-                        parentRow.Add(childRow);
-                    }
+        //            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+        //            Dictionary<string, object> childRow;
+        //            foreach (DataRow row in dtResult.Rows)
+        //            {
+        //                childRow = new Dictionary<string, object>();
+        //                foreach (DataColumn col in dtResult.Columns)
+        //                {
+        //                    childRow.Add(col.ColumnName, row[col]);
+        //                }
+        //                parentRow.Add(childRow);
+        //            }
 
-                    return new JsonResult(parentRow);
-                }
+        //            return new JsonResult(parentRow);
+        //        }
 
-                _logger.LogInformation("There Is No Data Database As Per Your Requirement,Count Was Null");
-                return new JsonResult(null);
-            }
-            return new JsonResult(null);
+        //        _logger.LogInformation("There Is No Data Database As Per Your Requirement,Count Was Null");
+        //        return new JsonResult(null);
+        //    }
+        //    return new JsonResult(null);
             
-         }
+        // }
 
         [Authorize]
         [Route("api/StoreOut/GetPalletDetails_Multi_Check")]
@@ -164,38 +164,59 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             return new JsonResult(null);
         }
 
+        [Authorize]
+        [Route("api/storeOut/InsertOrderData")]
+        [HttpPost]
+        public JsonResult Insert_Order_Item([FromBody] List<OrderData> orderData)
+        {
 
-        //[Route("api/storeOut/Insert_StockMovt_Update_StockItm")]
-        //[HttpPost]
-        //public JsonResult Insert_StockMovt_Update_StockItm([FromBody] List<StoreOutModel> storeOutData)
-        //{
-        //    foreach (StoreOutModel item in storeOutData)
-        //    {
+            var header = GetAllHeaders();
 
-        //        item.EXE_USER = System.Environment.MachineName;
-        //        item.EXE_WKS_ID = "AJIT SONVANE";
+            var values = GetHeaderData(Convert.ToString(header));
 
-        //        dtResult = objStoreOutDL.Insert_StockMovt(item);
-        //    }
+            var UserName = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
+            if (orderData.Count > 0)
+            {
+                _logger.LogInformation("Intialization Of Insert_Order_Item Process Has Been Started By this User = " + UserName);
+                foreach (OrderData data in orderData)
+                {
+                    data.EXE_USER = UserName;
+                    data.EXE_WKS_ID = System.Environment.MachineName;
 
-        //    int output = Convert.ToInt32(dtResult.Rows[0][0]);
+                    dtResult = objStoreOutDL.Insert_Into_OrderItm(data);
+                }
 
-        //    if (output == 1)
-        //    {
-        //        return new JsonResult("Success");
-        //    }
+                if(dtResult.Rows.Count > 0) { 
 
-        //    else
-        //    {
-        //        return new JsonResult("Failed");
-        //    }
+                    int output = Convert.ToInt32(dtResult.Rows[0][0]);
 
-        //}
+                    if (output == 1)
+                    {
+                        _logger.LogInformation("Data Has Been  Inserted Suceessfully By These User = " + UserName);
+
+                        return new JsonResult(output);
+                    }
+
+                    else
+                    {
+                        _logger.LogInformation("Data Has Not Been  Inserted By These User = " + UserName);
+
+                        return new JsonResult(output);
+                        
+                    }
+                }
+            }
+
+
+            return new JsonResult(null);
+        }
+
+
 
         [Authorize]
         [Route("api/storeOut/Insert_StockMovt_Update_StockItm")]
         [HttpPost]
-        public JsonResult Insert_StockMovt_Update_StockItm_1([FromBody] UpdateList storeOutData)
+        public JsonResult Insert_StockMovt_Update_StockItm([FromBody] List<StoreOutModel> storeOutData)
         {
 
             var header = GetAllHeaders();
@@ -204,21 +225,10 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
             var UserName = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
 
-            if(storeOutData != null)
+            if (storeOutData != null)
             {
-                foreach (OrderItm data in storeOutData.orderData)
-                {
-
-                    _logger.LogInformation("Intialization Of Insert_StockMovt_Update_StockItm (Update_Orderitm) Process Has Been Started By this User = " + UserName);
-
-                    data.EXE_USER = UserName;
-                    data.EXE_WKS_ID = System.Environment.MachineName;
-
-                    objStoreOutDL.Update_Orderitm(data);
-
-                }
-
-                foreach (StoreOutModel item in storeOutData.storeOutData)
+               
+                foreach (StoreOutModel item in storeOutData)
                 {
                     _logger.LogInformation("Intialization Of Insert_StockMovt_Update_StockItm Process Has Been Started By this User = " + UserName);
 
@@ -228,25 +238,78 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                     dtResult = objStoreOutDL.Insert_and_update_storeOutData(item);
                 }
 
-                int output = Convert.ToInt32(dtResult.Rows[0][0]);
-
-                if (output == 1)
+                if (dtResult.Rows.Count > 0)
                 {
-                    _logger.LogInformation("Data Has Been Updated And Inserted Suceessfully By These User = " + UserName);
-
-                    return new JsonResult("Success");
+                    int output = Convert.ToInt32(dtResult.Rows[0][0]);
+                    return new JsonResult(output);
+                }
+                else 
+                { 
+                    return new JsonResult(null);
                 }
 
-                else
-                {
-                    _logger.LogInformation("Data Has Not Been Updated And Inserted By These User = " + UserName);
 
-                    return new JsonResult("Failed");
-                }
 
             }
             return new JsonResult(null);
         }
+
+
+        //[Authorize]
+        //[Route("api/storeOut/Insert_StockMovt_Update_StockItm")]
+        //[HttpPost]
+        //public JsonResult Insert_StockMovt_Update_StockItm_1([FromBody] UpdateList storeOutData)
+        //{
+
+        //    var header = GetAllHeaders();
+
+        //    var values = GetHeaderData(Convert.ToString(header));
+
+        //    var UserName = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
+
+        //    if(storeOutData != null)
+        //    {
+        //        foreach (OrderItm data in storeOutData.orderData)
+        //        {
+
+        //            _logger.LogInformation("Intialization Of Insert_StockMovt_Update_StockItm (Update_Orderitm) Process Has Been Started By this User = " + UserName);
+
+        //            data.EXE_USER = UserName;
+        //            data.EXE_WKS_ID = System.Environment.MachineName;
+
+        //            objStoreOutDL.Update_Orderitm(data);
+
+        //        }
+
+        //        foreach (StoreOutModel item in storeOutData.storeOutData)
+        //        {
+        //            _logger.LogInformation("Intialization Of Insert_StockMovt_Update_StockItm Process Has Been Started By this User = " + UserName);
+
+        //            item.EXE_USER = UserName;
+        //            item.EXE_WKS_ID = System.Environment.MachineName;
+
+        //            dtResult = objStoreOutDL.Insert_and_update_storeOutData(item);
+        //        }
+
+        //        int output = Convert.ToInt32(dtResult.Rows[0][0]);
+
+        //        if (output == 1)
+        //        {
+        //            _logger.LogInformation("Data Has Been Updated And Inserted Suceessfully By These User = " + UserName);
+
+        //            return new JsonResult("Success");
+        //        }
+
+        //        else
+        //        {
+        //            _logger.LogInformation("Data Has Not Been Updated And Inserted By These User = " + UserName);
+
+        //            return new JsonResult("Failed");
+        //        }
+
+        //    }
+        //    return new JsonResult(null);
+        //}
 
     }
 }

@@ -8,6 +8,13 @@ namespace Godrej_Korber_Shared.Models.TataCummins
 {
     public class StoreOutModel
     {
+        public int ORD_ID { get; set; }
+
+        public string ORD_REC_POS { get; set; }
+
+        public string PRD_DESC { get; set; }
+
+
         public string STK_PRD_COD { get; set; }
 
         public float STK_RSV_QTY { get; set; }
@@ -34,7 +41,7 @@ namespace Godrej_Korber_Shared.Models.TataCummins
 
         public string ORD_PRD_COD { get; set; }
 
-        public float  ORD_REQ_QTY { get; set; }
+        public float ORD_REQ_QTY { get; set; }
 
         public float RSV_QTY { get; set; }
 
@@ -52,5 +59,21 @@ namespace Godrej_Korber_Shared.Models.TataCummins
         public List<StoreOutModel> storeOutData { get; set; }
 
         public List<OrderItm> orderData { get; set; }
+    }
+
+    public class OrderData
+    {
+        public int ORD_ID { get; set; }
+
+        public string ORD_REC_POS { get; set; }
+
+        public string ORD_PRD_COD { get; set; }
+
+        public float ORD_REQ_QTY { get; set; }
+
+        public string EXE_USER { get; set; }
+
+        public string EXE_WKS_ID { get; set; }
+
     }
 }
