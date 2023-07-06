@@ -12,6 +12,8 @@ namespace Godrej_Korber_Shared.Models.TataCummins
 
         public string ORD_REC_POS { get; set; }
 
+        public string ORD_REC_NR { get; set; }
+
         public string PRD_DESC { get; set; }
 
 

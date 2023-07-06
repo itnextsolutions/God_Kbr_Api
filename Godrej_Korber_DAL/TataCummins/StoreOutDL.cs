@@ -214,7 +214,7 @@ namespace Godrej_Korber_DAL.TataCummins
         {
             try
             {
-                OracleParameter[] param = new OracleParameter[11];
+                OracleParameter[] param = new OracleParameter[12];
 
                 param[0] = new OracleParameter();
                 param[0].OracleDbType = OracleDbType.RefCursor;
@@ -280,6 +280,12 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[10].ParameterName = "MSG_PRD_DESC";
                 param[10].Value = storeOutData.PRD_DESC;
                 param[10].Direction = ParameterDirection.Input;
+
+                param[11] = new OracleParameter();
+                param[11].OracleDbType = OracleDbType.Varchar2;
+                param[11].ParameterName = "MSG_ORD_REC_NR";
+                param[11].Value = storeOutData.ORD_REC_NR;
+                param[11].Direction = ParameterDirection.Input;
 
                 dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STORE_OUT.Insert_and_update_storeOutData_1", param);
 
