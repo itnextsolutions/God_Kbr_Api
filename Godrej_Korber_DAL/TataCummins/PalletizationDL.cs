@@ -26,7 +26,7 @@ namespace Godrej_Korber_DAL.TataCummins
         {
             try
             {
-                OracleParameter[] param = new OracleParameter[2];
+                OracleParameter[] param = new OracleParameter[3];
 
                 param[0] = new OracleParameter();
                 param[0].OracleDbType = OracleDbType.RefCursor;
@@ -103,8 +103,6 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[4].Value = Data.UserID;
                 param[4].Direction = ParameterDirection.Input;
 
-
-
                 param[5] = new OracleParameter();
                 param[5].ParameterName = "MSG_ORD_PRD_COD";
                 param[5].OracleDbType = OracleDbType.Varchar2;
@@ -116,7 +114,6 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[6].OracleDbType = OracleDbType.Int32;
                 param[6].Value = Data.ORD_HU_ID;
                 param[6].Direction = ParameterDirection.Input;
-
 
                 param[7] = new OracleParameter();
                 param[7].ParameterName = "MSG_ORD_INSPECT_NR";
@@ -130,8 +127,6 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[8].Value = Data.ORD_REF_NR;
                 param[8].Direction = ParameterDirection.Input;
 
-
-
                 param[9] = new OracleParameter();
                 param[9].ParameterName = "MSG_SHELF_LIFE";
                 param[9].OracleDbType = OracleDbType.Double;
@@ -144,7 +139,6 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[10].Value = Data.ORD_REC_NR;
                 param[10].Direction = ParameterDirection.Input;
 
-
                 param[11] = new OracleParameter();
                 param[11].ParameterName = "MSG_ORD_HU_BAR_COD";
                 param[11].OracleDbType = OracleDbType.Varchar2;
@@ -156,7 +150,6 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[12].OracleDbType = OracleDbType.Varchar2;
                 param[12].Value = Data.PRD_DESC;
                 param[12].Direction = ParameterDirection.Input;
-
 
                 param[13] = new OracleParameter();
                 param[13].ParameterName = "MSG_NOT_USEABLE";

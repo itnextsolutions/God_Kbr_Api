@@ -2,6 +2,7 @@
 using System.Data;
 using Godrej_Korber_Shared.Models;
 using Microsoft.Extensions.Logging;
+using System.Runtime.Intrinsics.Arm;
 
 namespace Godrej_Korber_DAL
 {
@@ -44,7 +45,7 @@ namespace Godrej_Korber_DAL
             }
            
         }
-        public DataTable GetLoginDetail(LoginModel loginData)
+        public DataTable GetLoginDetail(LoginModel loginData,string pass)
         {
             try
             {
@@ -65,7 +66,7 @@ namespace Godrej_Korber_DAL
                 param[2] = new OracleParameter();
                 param[2].ParameterName = "MSG_PASSWORD";
                 param[2].OracleDbType = OracleDbType.Varchar2;
-                param[2].Value = loginData.password;
+                param[2].Value = pass;
                 param[2].Direction = ParameterDirection.Input;
 
                 dtResult = objoracleHelper.ExecuteDataTable(objoracleHelper.GetConnection(), CommandType.StoredProcedure, "SP_GET_LOGIN_DETAILS", param);

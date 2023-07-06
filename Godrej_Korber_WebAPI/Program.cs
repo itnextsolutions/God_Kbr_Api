@@ -6,6 +6,7 @@ using Godrej_Korber_DAL.TataCummins;
 using Serilog;
 using Godrej_Korber_WebAPI.Controllers.Tata_Cummins;
 using Godrej_Korber_WebAPI.Controllers;
+using Godrej_Korber_DAL.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,7 @@ builder.Services.AddScoped<EmptyPalletDL>();
 builder.Services.AddScoped<StoreOutDL>();
 builder.Services.AddScoped<MaterialPickingDL>();
 builder.Services.AddScoped<LoginDL>();
+builder.Services.AddScoped<DashboardDL>();
 
 //End
 
@@ -87,6 +89,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//Configuration for both project should run on same domain
+app.Use(async (context, next) =>
+{
+    await next();
+    if(context.Response.StatusCode==404 && !System.IO.Path.HasExtension(context.Request.Path.Value))
+    {
+        context.Request.Path = "/index.html";
+        await next();
+    }
+
+});
+app.UseDefaultFiles();
+app.UseStaticFiles();
+//end
 
 app.UseCors("corspolicy");
 app.UseHttpsRedirection();

@@ -73,11 +73,11 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                     return new JsonResult(parentRow);
                 }
                 _logger.LogInformation("There Is No Data Database As Per Your Requirement,Count Was Null");
-                return new JsonResult(null);
+                return new JsonResult(0);
             }
 
             _logger.LogInformation("Null Data Is Coming");
-            return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
+            return new JsonResult(null);
         }
 
         [Authorize]
@@ -104,18 +104,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
                     return new JsonResult(UpdateOutput);
 
-                    //if (UpdateOutput == 0)
-                    //{
-                    //    return new JsonResult("Data Has Not Been Updated & Inserted");
-                    //}
-                    //else if (UpdateOutput == 1)
-                    //{
-                    //    return new JsonResult("Data Has Been Updated & Inserted Sucessfully ");
-                    //}
-                    //else
-                    //{
-                    //    return new JsonResult("NO, Response From Database");
-                    //}
+                   
             }
 
             _logger.LogInformation("Null Data Is Coming");

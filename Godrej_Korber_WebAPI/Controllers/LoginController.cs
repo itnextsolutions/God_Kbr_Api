@@ -72,7 +72,9 @@ namespace Godrej_Korber_WebAPI.Controllers
             {
                 _logger.LogInformation("Intialization Of Login Process Has Been Started By this User = " + UserName);
 
-                dtResult = objLogin.GetLoginDetail(login);
+                var pass = decrypt_pwd(login.password);
+
+                dtResult = objLogin.GetLoginDetail(login,pass);
 
                 if (dtResult.Rows.Count > 0)
                 {

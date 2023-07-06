@@ -132,7 +132,7 @@ namespace Godrej_Korber_DAL.TataCummins
             param[4] = new OracleParameter();
             param[4].OracleDbType = OracleDbType.Varchar2;
             param[4].ParameterName = "MSG_STK_REC_POS";
-            param[4].Value = materialData.STK_REC_POS.Value;
+            param[4].Value = materialData.MVT_REC_POS.Value;
             param[4].Direction = ParameterDirection.Input;
 
             param[5] = new OracleParameter();
@@ -144,7 +144,7 @@ namespace Godrej_Korber_DAL.TataCummins
             param[6] = new OracleParameter();
             param[6].OracleDbType = OracleDbType.Int32;
             param[6].ParameterName = "MSG_ORD_ID";
-            param[6].Value = materialData.STK_ORD_ITM.Value;
+            param[6].Value = materialData.MVT_ORD_ITM.Value;
             param[6].Direction = ParameterDirection.Input;
 
             param[7] = new OracleParameter();

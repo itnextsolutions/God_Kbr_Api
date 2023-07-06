@@ -244,11 +244,11 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 }
 
                 _logger.LogInformation("This PalleId = " + palletid + "Has Not Data");
-                return new JsonResult(null);
+                return new JsonResult(0);
             }
 
-            _logger.LogInformation("Null Data Is Coming");
-            return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
+            _logger.LogInformation("Pallet_ID Was NUll" + palletid = );
+            return new JsonResult(null);
 
         }
 

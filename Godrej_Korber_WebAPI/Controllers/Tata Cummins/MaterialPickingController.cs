@@ -65,20 +65,31 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
                 if(dtResult.Rows.Count > 0)
                 {
-                    foreach (DataRow row in dtResult.Rows)
+                    int output = Convert.ToInt32(dtResult.Rows[0][0]);
+                    if (output != 2 && output != 3 && output != 0)
                     {
-                        childRow = new Dictionary<string, object>();
-                        foreach (DataColumn col in dtResult.Columns)
+                        if (dtResult.Rows.Count > 0)
                         {
-                            childRow.Add(col.ColumnName, row[col]);
+                            foreach (DataRow row in dtResult.Rows)
+                            {
+                                childRow = new Dictionary<string, object>();
+                                foreach (DataColumn col in dtResult.Columns)
+                                {
+                                    childRow.Add(col.ColumnName, row[col]);
+                                }
+                                parentRow.Add(childRow);
+                            }
+                            return new JsonResult(parentRow);
                         }
-                        parentRow.Add(childRow);
                     }
-                    return new JsonResult(parentRow);
-                }
+                    else
+                    {
+                        _logger.LogInformation("There Is No Data Database As Per Your Requirement,Count Was Null");
+                        return new JsonResult(output);
 
-                _logger.LogInformation("There Is No Data Database As Per Your Requirement,Count Was Null");
-                return new JsonResult(null);
+                    }
+                }
+                              
             }
             return new JsonResult(null);
         }
@@ -134,18 +145,8 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
                 int output = Convert.ToInt32(dtResult.Rows[0][0]);
 
-                if (output == 1)
-                {
-                    _logger.LogInformation("UpdateMaterial Has Been Successful By this User = " + UserName);
-
-                    return new JsonResult("Success");
-                }
-
-                else
-                {
-                    _logger.LogInformation("UpdateMaterial Has Not Been Successful By this User = " + UserName);
-                    return new JsonResult("Failed");
-                }
+                return new JsonResult(output);
+                
             }
             return new JsonResult(null);
 
