@@ -5,6 +5,7 @@ using Godrej_Korber_Shared.Models.TataCummins;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc.Filters;
 
+
 namespace Godrej_Korber_DAL.TataCummins
 {
     public class StoreOutDL
@@ -54,6 +55,69 @@ namespace Godrej_Korber_DAL.TataCummins
         }
 
 
+        public DataTable Get_PalletDetails_Data(FetchPallet fetchPallet )
+        {
+            try
+            {
+                OracleParameter[] param = new OracleParameter[5];
+
+               
+
+                param[0] = new OracleParameter();
+                param[0].OracleDbType = OracleDbType.RefCursor;
+                param[0].ParameterName = "OCUR";
+                param[0].Direction = ParameterDirection.Output;
+
+                param[1] = new OracleParameter();
+                param[1].OracleDbType = OracleDbType.Varchar2;
+                param[1].ParameterName = "PRD_COD";
+                param[1].Value = fetchPallet.ORD_PRD_COD;
+                param[1].Direction = ParameterDirection.Input;
+
+                param[2] = new OracleParameter();
+                param[2].OracleDbType = OracleDbType.Varchar2;
+                param[2].ParameterName = "MSG_ORG_NAME";
+                param[2].Value = fetchPallet.ORD_SUPL_COD;
+                param[2].Direction = ParameterDirection.Input;
+
+
+                param[3] = new OracleParameter();
+                param[3].OracleDbType = OracleDbType.Varchar2;
+                param[3].ParameterName = "MSG_ORD_PAR1";
+                param[3].Value = fetchPallet.ORD_PAR1;
+                param[3].Direction = ParameterDirection.Input;
+
+
+                param[4] = new OracleParameter();
+                param[4].OracleDbType = OracleDbType.Varchar2;
+                param[4].ParameterName = "MSG_ORD_PAR2";
+                param[4].Value = fetchPallet.ORD_PAR2;
+                param[4].Direction = ParameterDirection.Input;
+
+
+
+                dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STORE_OUT.GET_STORE_OUT_PALLET_DETAILS", param);
+
+                if (dtResult.Rows.Count > 0)
+                {
+                    _logger.LogInformation("Data Has Been Retrived Successfully Requested PRD_COD Was = " + fetchPallet.ORD_PRD_COD + " BY These Procedure = GET_STORE_OUT_PALLET_DETAILS ");
+                    return dtResult;
+                }
+                else
+                {
+                    _logger.LogInformation("Data Has not Been Retrived!! Requested PRD_COD Was = " + fetchPallet.ORD_PRD_COD + " BY These Procedure = GET_STORE_OUT_PALLET_DETAILS ");
+                    return dtResult;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("Exception Occurs  BY These Procedure = GET_STORE_OUT_PALLET_DETAILS " + ex);
+                return dtResult;
+            }
+        }
+
+
+
         public DataTable Get_PalletDetails_Data(string partNo)
         {
             try
@@ -91,130 +155,12 @@ namespace Godrej_Korber_DAL.TataCummins
             }
         }
 
-        //public DataTable Update_Orderitm(OrderItm data)
-        //{
-        //    try
-        //    {
-        //        OracleParameter[] param = new OracleParameter[6];
-
-        //        param[0] = new OracleParameter();
-        //        param[0].OracleDbType = OracleDbType.RefCursor;
-        //        param[0].ParameterName = "OCUR";
-        //        param[0].Direction = ParameterDirection.Output;
-
-        //        param[1] = new OracleParameter();
-        //        param[1].OracleDbType = OracleDbType.Int32;
-        //        param[1].ParameterName = "MSG_ORD_ID";
-        //        param[1].Value = data.ORD_ID;
-        //        param[1].Direction = ParameterDirection.Input;
-
-        //        param[2] = new OracleParameter();
-        //        param[2].OracleDbType = OracleDbType.Double;
-        //        param[2].ParameterName = "MSG_RSV_QTY";
-        //        param[2].Value = data.RSV_QTY;
-        //        param[2].Direction = ParameterDirection.Input;
-
-        //        param[3] = new OracleParameter();
-        //        param[3].OracleDbType = OracleDbType.Int32;
-        //        param[3].ParameterName = "ORD_PARTIAL";
-        //        param[3].Value = data.ORD_PARTIAL;
-        //        param[3].Direction = ParameterDirection.Input;
-
-        //        param[4] = new OracleParameter();
-        //        param[4].OracleDbType = OracleDbType.Varchar2;
-        //        param[4].ParameterName = "MSG_EXE_USER";
-        //        param[4].Value = data.EXE_USER;
-        //        param[4].Direction = ParameterDirection.Input;
-
-        //        param[5] = new OracleParameter();
-        //        param[5].OracleDbType = OracleDbType.Varchar2;
-        //        param[5].ParameterName = "MSG_EXE_WKS_ID";
-        //        param[5].Value = data.EXE_WKS_ID;
-        //        param[5].Direction = ParameterDirection.Input;
-
-        //        dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STORE_OUT.UPDATE_ORDERITM", param);
-
-        //        int UpdateOutput = Convert.ToInt32(dtResult.Rows[0][0]);
-        //        if (UpdateOutput == 0)
-        //        {
-        //            _logger.LogInformation("Data Has Not Been Updated & Inserted By These User =" + data.EXE_USER + " Where ORD_ID =" + data.ORD_ID + "And RSV_QTY =" + data.RSV_QTY + " And ORD_PARTIAL " + data.ORD_PARTIAL + "By These Procedure = UPDATE_ORDERITM");
-        //            return dtResult;
-        //        }
-        //        else if (UpdateOutput == 1)
-        //        {
-        //            _logger.LogInformation("Data Has Been Updated & Inserted By These User =" + data.EXE_USER + " Where ORD_ID =" + data.ORD_ID + "And RSV_QTY =" + data.RSV_QTY + " And ORD_PARTIAL " + data.ORD_PARTIAL + "By These Procedure = UPDATE_ORDERITM");
-        //            return dtResult;
-        //        }
-        //        else
-        //        {
-        //            _logger.LogInformation("NO, Response From Database By These Procedure = UPDATE_ORDERITM");
-        //            return dtResult;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogWarning("Exception Occurs By These Procedure = UPDATE_ORDERITM " + ex);
-        //        return dtResult;
-        //    }
-        //}
-
-        //public DataTable Insert_StockMovt(StoreOutModel  modelStoreOut )
-        //{
-        //    OracleParameter[] param = new OracleParameter[7];
-
-        //    param[0] = new OracleParameter();
-        //    param[0].OracleDbType = OracleDbType.RefCursor;
-        //    param[0].ParameterName = "OCUR";;
-        //    param[0].Direction = ParameterDirection.Output;
-
-        //    param[1] = new OracleParameter();
-        //    param[1].OracleDbType = OracleDbType.Varchar2;
-        //    param[1].ParameterName = "MSG_PRD_COD";
-        //    param[1].Value = modelStoreOut.STK_PRD_COD;
-        //    param[1].Direction = ParameterDirection.Input;
-
-            
-        //    param[2] = new OracleParameter();
-        //    param[2].OracleDbType = OracleDbType.Int32;
-        //    param[2].ParameterName = "MSG_PRD_QTY";
-        //    param[2].Value = modelStoreOut.STK_RSV_QTY;
-        //    param[2].Direction = ParameterDirection.Input;
-
-        //    param[3] = new OracleParameter();
-        //    param[3].OracleDbType = OracleDbType.Int32;
-        //    param[3].ParameterName = "MSG_DST_QTY";
-        //    param[3].Value = modelStoreOut.STK_PRD_QTY;
-        //    param[3].Direction = ParameterDirection.Input;
-
-        //    param[4] = new OracleParameter();
-        //    param[4].OracleDbType = OracleDbType.Int32;
-        //    param[4].ParameterName = "MSG_HU_ID";
-        //    param[4].Value = modelStoreOut.HU_ID;
-        //    param[4].Direction = ParameterDirection.Input;
-
-        //    param[5] = new OracleParameter();
-        //    param[5].OracleDbType = OracleDbType.Varchar2;
-        //    param[5].ParameterName = "MSG_EXE_USER";
-        //    param[5].Value = modelStoreOut.EXE_USER;
-        //    param[5].Direction = ParameterDirection.Input;
-
-        //    param[6] = new OracleParameter();
-        //    param[6].OracleDbType = OracleDbType.Varchar2;
-        //    param[6].ParameterName = "MSG_EXE_WKS_ID";
-        //    param[6].Value = modelStoreOut.EXE_WKS_ID;
-        //    param[6].Direction = ParameterDirection.Input;
-
-        //    dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STORE_OUT.INSERT_INTO_STOCKMOVT", param);
-        //    return dtResult;
-
-        //}
-
-
+       
         public DataTable Insert_and_update_storeOutData(StoreOutModel storeOutData)
         {
             try
             {
-                OracleParameter[] param = new OracleParameter[12];
+                OracleParameter[] param = new OracleParameter[13];
 
                 param[0] = new OracleParameter();
                 param[0].OracleDbType = OracleDbType.RefCursor;
@@ -228,13 +174,13 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[1].Direction = ParameterDirection.Input;
 
                 param[2] = new OracleParameter();
-                param[2].OracleDbType = OracleDbType.Int32;
+                param[2].OracleDbType = OracleDbType.Double;
                 param[2].ParameterName = "MSG_PRD_QTY";
                 param[2].Value = storeOutData.STK_PRD_QTY;
                 param[2].Direction = ParameterDirection.Input;
 
                 param[3] = new OracleParameter();
-                param[3].OracleDbType = OracleDbType.Int32;
+                param[3].OracleDbType = OracleDbType.Double;
                 param[3].ParameterName = "MSG_RSV_QTY";
                 param[3].Value = storeOutData.STK_RSV_QTY;
                 param[3].Direction = ParameterDirection.Input;
@@ -286,6 +232,12 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[11].ParameterName = "MSG_ORD_REC_NR";
                 param[11].Value = storeOutData.ORD_REC_NR;
                 param[11].Direction = ParameterDirection.Input;
+
+                param[12] = new OracleParameter();
+                param[12].OracleDbType = OracleDbType.Varchar2;
+                param[12].ParameterName = "MSG_ORG_NAME";
+                param[12].Value = storeOutData.ORD_SUPL_COD;
+                param[12].Direction = ParameterDirection.Input;
 
                 dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STORE_OUT.Insert_and_update_storeOutData_1", param);
 
@@ -405,7 +357,7 @@ namespace Godrej_Korber_DAL.TataCummins
             try
             {
 
-                OracleParameter[] param = new OracleParameter[7];
+                OracleParameter[] param = new OracleParameter[9];
 
                 param[0] = new OracleParameter();
                 param[0].OracleDbType = OracleDbType.RefCursor;
@@ -413,15 +365,15 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[0].Direction = ParameterDirection.Output;
 
                 param[1] = new OracleParameter();
-                param[1].OracleDbType = OracleDbType.Int32;
-                param[1].ParameterName = "MSG_ORD_ID";
-                param[1].Value = data.ORD_ID;
+                param[1].OracleDbType = OracleDbType.Varchar2;
+                param[1].ParameterName = "MSG_ORG_NAME";
+                param[1].Value = data.ORD_SUPL_COD;
                 param[1].Direction = ParameterDirection.Input;
 
                 param[2] = new OracleParameter();
                 param[2].OracleDbType = OracleDbType.Varchar2;
-                param[2].ParameterName = "MSG_REC_POS";
-                param[2].Value = data.ORD_REC_POS;
+                param[2].ParameterName = "MSG_DESCRIPTION";
+                param[2].Value = data.ORD_PAR3;
                 param[2].Direction = ParameterDirection.Input;
 
                 param[3] = new OracleParameter();
@@ -447,6 +399,20 @@ namespace Godrej_Korber_DAL.TataCummins
                 param[6].ParameterName = "MSG_EXE_WKS_ID";
                 param[6].Value = data.EXE_WKS_ID;
                 param[6].Direction = ParameterDirection.Input;
+
+                param[7] = new OracleParameter();
+                param[7].OracleDbType = OracleDbType.Varchar2;
+                param[7].ParameterName = "MSG_ORD_PAR1";
+                param[7].Value = data.ORD_PAR1;
+                param[7].Direction = ParameterDirection.Input;
+
+                param[8] = new OracleParameter();
+                param[8].OracleDbType = OracleDbType.Varchar2;
+                param[8].ParameterName = "MSG_ORD_PAR2";
+                param[8].Value = data.ORD_PAR2;
+                param[8].Direction = ParameterDirection.Input;
+
+
 
                 dtResult = objOracleHelper.ExecuteDataTable(objOracleHelper.GetConnection(), CommandType.StoredProcedure, "TATA_CUMMINS_STORE_OUT.Insert_Into_OrderItm", param);
                 return dtResult;

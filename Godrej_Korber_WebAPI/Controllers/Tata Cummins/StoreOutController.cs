@@ -6,6 +6,7 @@ using System.Data;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -81,48 +82,54 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
 
         }
 
-        //[Authorize]
-        //[Route("api/StoreOut/GetPalletDetails_Single_Check")]
-        //[HttpGet]
-        //public JsonResult Get_PalletDetails_Data_Single_Check(string parameter)
-        //{
-        //    var header = GetAllHeaders();
+        [Authorize]
+        [Route("api/StoreOut/GetPalletDetails")]
+        [HttpPost]
+        public JsonResult Get_PalletDetails_Data([FromBody] List<FetchPallet> parameter)
+        //public JsonResult Get_PalletDetails_Data_Single_Check([FromQuery] List<string> parameter)
+        {
+            //List<string[]> myList = JsonSerializer.Deserialize<List<string[]>>(parameter);
 
-        //    var values = GetHeaderData(Convert.ToString(header));
 
-        //    var UserName = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
+            var header = GetAllHeaders();
 
-        //    if(parameter != null)
-        //    {
-        //        _logger.LogInformation("Intialization Of GetPalletDetails_Single_Check Process Has Been Started By this User = " + UserName);
+            var values = GetHeaderData(Convert.ToString(header));
 
-        //        dtResult = objStoreOutDL.Get_PalletDetails_Data(parameter);
-                
-        //        if (dtResult.Rows.Count > 0) 
-        //        {
-        //            _logger.LogInformation("Retrived The Data Successfully By This User = " + UserName);
+            var UserName = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
 
-        //            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
-        //            Dictionary<string, object> childRow;
-        //            foreach (DataRow row in dtResult.Rows)
-        //            {
-        //                childRow = new Dictionary<string, object>();
-        //                foreach (DataColumn col in dtResult.Columns)
-        //                {
-        //                    childRow.Add(col.ColumnName, row[col]);
-        //                }
-        //                parentRow.Add(childRow);
-        //            }
+            if (parameter != null)
+            {
+                _logger.LogInformation("Intialization Of GetPalletDetails_Multi_Check Process Has Been Started By this User = " + UserName);
 
-        //            return new JsonResult(parentRow);
-        //        }
+                List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+                Dictionary<string, object> childRow;
+                foreach (var item in parameter)
+                {
+                    //var stuff = JsonConvert.DeserializeObject(Convert.ToString(item));
 
-        //        _logger.LogInformation("There Is No Data Database As Per Your Requirement,Count Was Null");
-        //        return new JsonResult(null);
-        //    }
-        //    return new JsonResult(null);
-            
-        // }
+                    dtResult = objStoreOutDL.Get_PalletDetails_Data(item);
+                    foreach (DataRow row in dtResult.Rows)
+                    {
+                        childRow = new Dictionary<string, object>();
+                        foreach (DataColumn col in dtResult.Columns)
+                        {
+                            childRow.Add(col.ColumnName, row[col]);
+                        }
+                        parentRow.Add(childRow);
+                    }
+                }
+
+                //dtResult = objStoreOutDL.Get_PalletDetails_Data(parameter);
+
+               
+               
+
+                return new JsonResult(parentRow);
+            }
+
+            return new JsonResult(null);
+
+        }
 
         [Authorize]
         [Route("api/StoreOut/GetPalletDetails_Multi_Check")]
@@ -175,7 +182,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
             var values = GetHeaderData(Convert.ToString(header));
 
             var UserName = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
-            if (orderData.Count > 0)
+            if ( orderData != null && orderData.Count > 0)
             {
                 _logger.LogInformation("Intialization Of Insert_Order_Item Process Has Been Started By this User = " + UserName);
                 foreach (OrderData data in orderData)
@@ -255,61 +262,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
         }
 
 
-        //[Authorize]
-        //[Route("api/storeOut/Insert_StockMovt_Update_StockItm")]
-        //[HttpPost]
-        //public JsonResult Insert_StockMovt_Update_StockItm_1([FromBody] UpdateList storeOutData)
-        //{
-
-        //    var header = GetAllHeaders();
-
-        //    var values = GetHeaderData(Convert.ToString(header));
-
-        //    var UserName = (Microsoft.Extensions.Primitives.StringValues)((ObjectResult)values.Result).Value;
-
-        //    if(storeOutData != null)
-        //    {
-        //        foreach (OrderItm data in storeOutData.orderData)
-        //        {
-
-        //            _logger.LogInformation("Intialization Of Insert_StockMovt_Update_StockItm (Update_Orderitm) Process Has Been Started By this User = " + UserName);
-
-        //            data.EXE_USER = UserName;
-        //            data.EXE_WKS_ID = System.Environment.MachineName;
-
-        //            objStoreOutDL.Update_Orderitm(data);
-
-        //        }
-
-        //        foreach (StoreOutModel item in storeOutData.storeOutData)
-        //        {
-        //            _logger.LogInformation("Intialization Of Insert_StockMovt_Update_StockItm Process Has Been Started By this User = " + UserName);
-
-        //            item.EXE_USER = UserName;
-        //            item.EXE_WKS_ID = System.Environment.MachineName;
-
-        //            dtResult = objStoreOutDL.Insert_and_update_storeOutData(item);
-        //        }
-
-        //        int output = Convert.ToInt32(dtResult.Rows[0][0]);
-
-        //        if (output == 1)
-        //        {
-        //            _logger.LogInformation("Data Has Been Updated And Inserted Suceessfully By These User = " + UserName);
-
-        //            return new JsonResult("Success");
-        //        }
-
-        //        else
-        //        {
-        //            _logger.LogInformation("Data Has Not Been Updated And Inserted By These User = " + UserName);
-
-        //            return new JsonResult("Failed");
-        //        }
-
-        //    }
-        //    return new JsonResult(null);
-        //}
+       
 
     }
 }
