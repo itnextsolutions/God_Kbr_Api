@@ -89,7 +89,9 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 {
                     _logger.LogInformation("Updating The Process Of Intialization In Store Request Cancellation Has Been Started By this User = " + Username);
 
-                    dt = ObjGetStoreOutRequestCancellation.UpdateOrderItem(items,Username);
+                    dt = ObjGetStoreOutRequestCancellation.UpdateOrderItem(items, Username);
+                }
+
 
                     int UpdateOutput = Convert.ToInt32(dt.Rows[0][0]);
                     if (UpdateOutput == 0)
@@ -107,7 +109,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                         _logger.LogInformation("NO, Response From Database");
                         return new JsonResult("NO, Response From Database");
                     }
-                }
+                
             }
             _logger.LogInformation("Null Data Is Coming");
             return new JsonResult("Data Is Coming Null,You Need To Contact With Your Software Devloper");
@@ -169,7 +171,8 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                     data.MSG_WRK_STN = System.Environment.MachineName;
                     data.MSG_WRK_USER = Username;
 
-                    dt = ObjGetStoreOutRequestCancellation.UpdateRequestCancelletion(data,Username);
+                    dt = ObjGetStoreOutRequestCancellation.UpdateRequestCancelletion(data, Username);
+                }
 
                     int UpdateOutput = Convert.ToInt32(dt.Rows[0][0]);
 
@@ -188,7 +191,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                         _logger.LogInformation("NO, Response From Database");
                         return new JsonResult("NO, Response From Database");
                     }
-                }
+                
             }
             _logger.LogInformation("Null Data Is Coming");
             return new JsonResult("Data Is Coming Null ,You Need To Contact With Your Software Devloper");

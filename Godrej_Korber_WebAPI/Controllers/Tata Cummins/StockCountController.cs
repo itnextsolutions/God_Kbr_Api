@@ -247,7 +247,7 @@ namespace Godrej_Korber_WebAPI.Controllers.Tata_Cummins
                 return new JsonResult(0);
             }
 
-            _logger.LogInformation("Pallet_ID Was NUll" + palletid = );
+            _logger.LogInformation("Pallet_ID Was NUll" + palletid );
             return new JsonResult(null);
 
         }
